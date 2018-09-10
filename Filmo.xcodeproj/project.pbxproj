@@ -14,6 +14,8 @@
 		64C2FF0A2144B4D300D4D7A0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 64C2FF082144B4D300D4D7A0 /* LaunchScreen.storyboard */; };
 		64C2FF152144B4D300D4D7A0 /* FilmoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C2FF142144B4D300D4D7A0 /* FilmoTests.swift */; };
 		64C2FF202144B4D300D4D7A0 /* FilmoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C2FF1F2144B4D300D4D7A0 /* FilmoUITests.swift */; };
+		64C2FF2E2144B59E00D4D7A0 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C2FF2D2144B59E00D4D7A0 /* GradientView.swift */; };
+		64C2FF302144B7E900D4D7A0 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C2FF2F2144B7E900D4D7A0 /* ListViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,8 @@
 		64C2FF1B2144B4D300D4D7A0 /* FilmoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FilmoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		64C2FF1F2144B4D300D4D7A0 /* FilmoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmoUITests.swift; sourceTree = "<group>"; };
 		64C2FF212144B4D300D4D7A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		64C2FF2D2144B59E00D4D7A0 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		64C2FF2F2144B7E900D4D7A0 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,10 +103,12 @@
 			children = (
 				64C2FEFF2144B4D100D4D7A0 /* AppDelegate.swift */,
 				64C2FF012144B4D100D4D7A0 /* ViewController.swift */,
+				64C2FF2F2144B7E900D4D7A0 /* ListViewController.swift */,
 				64C2FF032144B4D100D4D7A0 /* Main.storyboard */,
 				64C2FF062144B4D300D4D7A0 /* Assets.xcassets */,
 				64C2FF082144B4D300D4D7A0 /* LaunchScreen.storyboard */,
 				64C2FF0B2144B4D300D4D7A0 /* Info.plist */,
+				64C2FF2D2144B59E00D4D7A0 /* GradientView.swift */,
 			);
 			path = Filmo;
 			sourceTree = "<group>";
@@ -258,6 +264,8 @@
 			files = (
 				64C2FF022144B4D100D4D7A0 /* ViewController.swift in Sources */,
 				64C2FF002144B4D100D4D7A0 /* AppDelegate.swift in Sources */,
+				64C2FF302144B7E900D4D7A0 /* ListViewController.swift in Sources */,
+				64C2FF2E2144B59E00D4D7A0 /* GradientView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
