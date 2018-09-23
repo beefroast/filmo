@@ -67,10 +67,13 @@ class FilmDetailsViewController: UIViewController {
                 self.activityIndicator?.stopAnimating()
             }
             
-            prom?.done({ [weak self] (image) in
+            
+            
+            prom?.ensure({ [weak self] () -> Void in
                 guard prom === self?.imagePromise else { return }
-                self?.imgViewPoster?.image = image
                 self?.activityIndicator?.stopAnimating()
+            }).done({ [weak self] (image) in
+                self?.imgViewPoster?.image = image
             })
         }
     }
@@ -96,11 +99,11 @@ class FilmDetailsViewController: UIViewController {
     func updateWithFilm(film: Film) {
         
         self.lblTitle?.text = film.name
-        self.lblSynopsis?.text = film.synopsis.map({ $0 + "\n\n" + $0 + "\n\n" + $0 }) 
+        self.lblSynopsis?.text = film.synopsis
         self.lblSynopsis?.isHidden = (film.synopsis == nil)
         
-        self.imagePromise = film.imagePath.map({ (imagePath) -> Promise<UIImage> in
-            return UIImage.from(imagePath: imagePath)
+        self.imagePromise = film.imagePath.map({ (path) -> Promise<UIImage> in
+            return UIImage.from(imagePath: path)
         })
         
         self.setOrHide(label: self.lblGenres, value: film.genres)

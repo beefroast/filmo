@@ -10,7 +10,7 @@ import Foundation
 import PromiseKit
 import Alamofire
 import Fuzi
-
+import WebKit
 
 struct Film {
     let id: String
@@ -26,6 +26,7 @@ struct Film {
     let awards: String?
     let rating: String?
     let imagePath: String?
+    let resourcePath: String?
     let synopsis: String?
 }
 
@@ -154,6 +155,8 @@ class ImdbSearchPageFinder: ImdbPageFinder {
             return "https://www.imdb.com/" + href
         }
     }
+    
+
 }
 
 
@@ -266,12 +269,24 @@ class ImdbScraper {
             return try scraper.parse(document: document)
         }
     }
-    
-    func filmDataFrom(htmlDocument: HTMLDocument) -> Film {
+
+    func getImageFor(resourcesPath: URLConvertible) -> Promise<UIImage> {
         
-        fatalError()
+        let url = "https://imdb.com\(resourcesPath)"
         
-        
+        return self.sessionManager.requestPromise(url: url).map({ (data) -> HTMLDocument in
+            return try HTMLDocument(data: data)
+            
+        }).map({ (document) -> String in
+            
+            guard let src = document.firstChild(xpath: "//*[@id=\"photo-container\"]/div/div[2]/div/div[2]/div[1]/div[2]/div/img[2]")?.attr("src") else {
+                throw ScraperError.unknown
+            }
+            return src
+            
+        }).then { (imgPath) -> Promise<UIImage> in
+            return UIImage.from(imagePath: imgPath)
+        }
     }
     
     

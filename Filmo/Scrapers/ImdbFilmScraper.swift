@@ -21,6 +21,7 @@ class ImdbFilmScraper: ImdbPageScraper {
         let ratingPath = "//*[@id=\"title-overview-widget\"]/div[2]/div[2]/div/div[1]/div[1]/div[1]/strong/span"
         let synopsisPath = "//*[@id=\"title-overview-widget\"]/div[3]/div[1]/div[1]"
         let imagePath = "//*[@id=\"title-overview-widget\"]/div[2]/div[3]/div[1]/a/img"
+        let resourcesPath = "//*[@id=\"title-overview-widget\"]/div[2]/div[3]/div[1]/a"
         let genrePath = "//*[@id=\"title-overview-widget\"]/div[2]/div[2]/div/div[2]/div[2]/div/a"
         
         let genres = document.xpath(genrePath).filter({ (xml) -> Bool in
@@ -28,6 +29,10 @@ class ImdbFilmScraper: ImdbPageScraper {
         }).compactMap { (xml) -> String in
             xml.stringValue
         }.joined(separator: ", ")
+        
+        let resources = document.firstChild(xpath: resourcesPath).flatMap { (xml) -> String? in
+            xml.attr("href")
+        }
         
         return { (id) in
             return Film(
@@ -44,6 +49,7 @@ class ImdbFilmScraper: ImdbPageScraper {
                 awards: nil,
                 rating: document.firstChild(xpath: ratingPath)?.stringValue.trimmingCharacters(in: .whitespacesAndNewlines),
                 imagePath: document.firstChild(xpath: imagePath)?.attr("src"),
+                resourcePath: resources,
                 synopsis: document.firstChild(xpath: synopsisPath)?.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
             )
         }
