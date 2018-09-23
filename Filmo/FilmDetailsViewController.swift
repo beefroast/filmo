@@ -89,9 +89,6 @@ class FilmDetailsViewController: UIViewController {
             self.lblTitle?.text = nil
             self.lblSynopsis?.text = nil
         }
-        
-        // Testing
-        self.filmPromise = imdb.getFilmWith(id: "tt6998518")
     }
     
     lazy var imdb = ImdbScraper()
@@ -99,7 +96,7 @@ class FilmDetailsViewController: UIViewController {
     func updateWithFilm(film: Film) {
         
         self.lblTitle?.text = film.name
-        self.lblSynopsis?.text = film.synopsis
+        self.lblSynopsis?.text = film.synopsis.map({ $0 + "\n\n" + $0 + "\n\n" + $0 }) 
         self.lblSynopsis?.isHidden = (film.synopsis == nil)
         
         self.imagePromise = film.imagePath.map({ (imagePath) -> Promise<UIImage> in

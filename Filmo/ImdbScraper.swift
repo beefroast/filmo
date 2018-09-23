@@ -218,7 +218,9 @@ class ImdbScraper {
             return try tableRows.compactMap({ (xml) -> MediaSearchResult? in
                 
                 let title = xml.firstChild(xpath: "td[2]/a")?.stringValue
-                let uuid = xml.firstChild(xpath: "td[2]/a")?.attr("href")
+                let fudge = xml.firstChild(xpath: "td[2]/a")?.attr("href")?.split(separator: "/")[1]
+                let uuid = fudge.map({ String($0) })
+                
                 
                 let pattern = "\\(([^\\)]+)\\)"
                 

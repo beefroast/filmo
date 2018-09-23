@@ -12,6 +12,7 @@
 		643894D7215654E2003563E0 /* ImdbPageScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643894D6215654E2003563E0 /* ImdbPageScraper.swift */; };
 		643894D921565510003563E0 /* ImdbFilmScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643894D821565510003563E0 /* ImdbFilmScraper.swift */; };
 		643894DB21576C3E003563E0 /* FilmDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643894DA21576C3E003563E0 /* FilmDetailsViewController.swift */; };
+		643894DD215773AC003563E0 /* FilmSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643894DC215773AC003563E0 /* FilmSearchViewController.swift */; };
 		644FD9642155F2940000D108 /* ImdbScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 644FD9632155F2940000D108 /* ImdbScraper.swift */; };
 		64C2FF002144B4D100D4D7A0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C2FEFF2144B4D100D4D7A0 /* AppDelegate.swift */; };
 		64C2FF022144B4D100D4D7A0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C2FF012144B4D100D4D7A0 /* ViewController.swift */; };
@@ -46,6 +47,7 @@
 		643894D6215654E2003563E0 /* ImdbPageScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImdbPageScraper.swift; sourceTree = "<group>"; };
 		643894D821565510003563E0 /* ImdbFilmScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImdbFilmScraper.swift; sourceTree = "<group>"; };
 		643894DA21576C3E003563E0 /* FilmDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmDetailsViewController.swift; sourceTree = "<group>"; };
+		643894DC215773AC003563E0 /* FilmSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmSearchViewController.swift; sourceTree = "<group>"; };
 		644FD9632155F2940000D108 /* ImdbScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImdbScraper.swift; sourceTree = "<group>"; };
 		64C2FEFC2144B4D100D4D7A0 /* Filmo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Filmo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		64C2FEFF2144B4D100D4D7A0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				643894DA21576C3E003563E0 /* FilmDetailsViewController.swift */,
 				64C2FF012144B4D100D4D7A0 /* ViewController.swift */,
 				64C2FF2F2144B7E900D4D7A0 /* ListViewController.swift */,
+				643894DC215773AC003563E0 /* FilmSearchViewController.swift */,
 				64C2FF032144B4D100D4D7A0 /* Main.storyboard */,
 				64C2FF062144B4D300D4D7A0 /* Assets.xcassets */,
 				64C2FF082144B4D300D4D7A0 /* LaunchScreen.storyboard */,
@@ -411,6 +414,7 @@
 				643894D921565510003563E0 /* ImdbFilmScraper.swift in Sources */,
 				644FD9642155F2940000D108 /* ImdbScraper.swift in Sources */,
 				64C2FF302144B7E900D4D7A0 /* ListViewController.swift in Sources */,
+				643894DD215773AC003563E0 /* FilmSearchViewController.swift in Sources */,
 				64C2FF2E2144B59E00D4D7A0 /* GradientView.swift in Sources */,
 				643894DB21576C3E003563E0 /* FilmDetailsViewController.swift in Sources */,
 			);
