@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PromiseKit
 
 
 class FilmTableViewCell: UITableViewCell {
@@ -15,10 +16,51 @@ class FilmTableViewCell: UITableViewCell {
     @IBOutlet weak var lblDescription: UILabel?
 }
 
+struct FilmTableViewCellData {
+    let id: String
+    let name: Promise<String?>
+    let descriptionPromise: Promise<String?>
+    let imagePromise: Promise<UIImage?>
+}
+
+
+extension Result {
+    var value: T? {
+        get {
+            switch self {
+            case .fulfilled(let value): return value
+            case .rejected(_): return nil
+            }
+        }
+    }
+}
+
+extension UIImage {
+    static func from(imagePath: String) -> Promise<UIImage> {
+        return Promise<UIImage> { seal in
+            DispatchQueue.main.async {
+                do {
+                    guard let url = URL(string: imagePath) else { throw ScraperError.unknown }
+                    let data = try Data(contentsOf: url)
+                    guard let image = UIImage(data: data) else { throw ScraperError.unknown }
+                    seal.fulfill(image)
+                } catch {
+                    seal.reject(error)
+                }
+            }
+        }
+    }
+}
 
 class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView?
+
+    var filmData: [FilmTableViewCellData]? = nil {
+        didSet {
+            self.tableView?.reloadData()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +68,37 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.tableView?.separatorColor = UIColor.clear
         
         // Do any additional setup after loading the view.
+        
+        imdbScraper.getFilmTitlesMatching(search: "Purity Ring").done { (titles) in
+            print(titles)
+        }
+        
+        self.filmData = [
+            "tt6998518"
+        ].map({ (id) -> FilmTableViewCellData in
+            self.cellDataForFilm(withId: id)
+        })
+    }
+    
+    lazy var imdbScraper = ImdbScraper()
+    
+    func cellDataForFilm(withId: String) -> FilmTableViewCellData {
+        
+        let getFilmPromise = imdbScraper.getFilmWith(id: withId)
+        
+        let imagePromise = getFilmPromise.then { (film) -> Guarantee<UIImage?> in
+            guard let path = film.imagePath else {
+                return Guarantee<UIImage?>.value(nil)
+            }
+            return UIImage.from(imagePath: path).guarantee()
+        }
+        
+        return FilmTableViewCellData(
+            id: withId,
+            name: getFilmPromise.map({ $0.name }),
+            descriptionPromise: getFilmPromise.map({ $0.synopsis }),
+            imagePromise: imagePromise
+        )
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -33,7 +106,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return self.filmData?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -44,26 +117,44 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         cell.selectionStyle = .none
         
-        let img = UIImage(named: "testImage\((indexPath.row % 2) == 1 ? "" : "2")")
+        guard let filmData = self.filmData?[indexPath.row] else {
+            return cell
+        }
         
-        cell.imgViewBackground?.image = img
+        if let name = filmData.name.value {
+            cell.lblTitle?.text = name
+        } else {
+            cell.lblTitle?.text = "Loading..."
+            filmData.name.done({
+                cell.lblTitle?.text = $0
+                tableView.beginUpdates()
+                tableView.endUpdates()
+            }).catch { (error) in
+                cell.lblDescription?.text = error.localizedDescription
+            }
+        }
         
-        cell.lblTitle?.text = (indexPath.row % 2) == 1
-            ? "A Very Long Title For Testing Autoscaling Cells"
-            : "Pigeo-bro"
+        if let desc = filmData.descriptionPromise.value {
+            cell.lblDescription?.text = desc
+        } else {
+            cell.lblDescription?.text = nil
+            filmData.descriptionPromise.done({
+                cell.lblDescription?.text = $0
+                tableView.beginUpdates()
+                tableView.endUpdates()
+            }).catch { (error) in
+                cell.lblDescription?.text = error.localizedDescription
+            }
+        }
         
-        
-//        let label = UILabel.init()
-//        label.shadowOffset
-//        label.shadowColor
-//
-        
+        cell.imgViewBackground?.image = nil
+        filmData.imagePromise.done({ cell.imgViewBackground?.image = $0 })
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 300
+        return 100
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
