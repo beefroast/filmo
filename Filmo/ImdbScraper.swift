@@ -146,7 +146,7 @@ class ImdbSearchPageFinder: ImdbPageFinder {
 
 
 
-class ImdbScraper {
+class ImdbScraper: Imdb {
     
     // TODO: Inject
     lazy var sessionManager = Alamofire.SessionManager(configuration: URLSessionConfiguration.default)
@@ -173,6 +173,7 @@ class ImdbScraper {
     }
     
     func getFilmWith(id: String) -> Promise<Film> {
+        print("getFilmWith(id: \(id))")
         return self.getFilmWith(id: id, scraper: ImdbFilmScraper().typeErased())
     }
     

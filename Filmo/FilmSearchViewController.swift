@@ -55,7 +55,7 @@ class PromiseDebouncer {
 
 class FilmSearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
 
-    lazy var imdb = ImdbScraper()
+    lazy var imdb = ImdbScraper().withInMemoryCache()
     lazy var promiseDebouncer = PromiseDebouncer(timeInterval: 1.0)
     
     @IBOutlet weak var tableView: UITableView?

@@ -90,7 +90,6 @@ class FilmDetailsViewController: UIViewController {
         self.optionalFields.compactMap({ $0?.superview }).forEach { (v) in
             v.isHidden = true
         }
-        self.activityIndicator?.startAnimating()
         
         if let film = self.filmPromise?.value {
             self.updateWithFilm(film: film)
@@ -105,7 +104,7 @@ class FilmDetailsViewController: UIViewController {
     func updateWithFilm(film: Film) {
         
         self.lblTitle?.text = film.name
-        self.lblSynopsis?.text = [film.synopsis, film.synopsis, film.synopsis].compactMap({ $0 }).joined(separator: "\n\n")
+        self.lblSynopsis?.text = film.synopsis //, film.synopsis, film.synopsis].compactMap({ $0 }).joined(separator: "\n\n")
         self.lblSynopsis?.isHidden = (film.synopsis == nil)
         
         self.imagePromise = film.imagePath.map({ (path) -> Promise<UIImage> in
@@ -126,5 +125,9 @@ class FilmDetailsViewController: UIViewController {
     func setOrHide(label: UILabel?, value: String?) {
         label?.text = value
         label?.superview?.isHidden = (value == nil)
+    }
+    
+    static func filmDetailsViewController(storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)) -> FilmDetailsViewController? {
+        return storyboard.instantiateViewController(withIdentifier: "FilmDetails") as? FilmDetailsViewController
     }
 }

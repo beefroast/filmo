@@ -38,7 +38,7 @@ extension Result {
 extension UIImage {
     static func from(imagePath: String) -> Promise<UIImage> {
         return Promise<UIImage> { seal in
-            DispatchQueue.main.async {
+            DispatchQueue.global().async {
                 do {
                     guard let url = URL(string: imagePath) else { throw ScraperError.unknown }
                     let data = try Data(contentsOf: url)
@@ -56,32 +56,37 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     @IBOutlet weak var tableView: UITableView?
 
+    var filmList: [FilmReference]? = nil {
+        didSet {
+            guard let films = self.filmList else { return }
+            self.filmData = films.map({ (films) -> FilmTableViewCellData in
+                self.cellDataForFilm(withId: films.id)
+            })
+        }
+    }
+    
     var filmData: [FilmTableViewCellData]? = nil {
         didSet {
             self.tableView?.reloadData()
         }
     }
     
+    lazy var imdbScraper = ImdbScraper().withInMemoryCache()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-            self.tableView?.separatorColor = UIColor.clear
+        self.tableView?.separatorColor = UIColor.clear
         
-        // Do any additional setup after loading the view.
-        
-        imdbScraper.getFilmTitlesMatching(search: "Purity Ring").done { (titles) in
-            print(titles)
-        }
-        
-        self.filmData = [
-            "tt6998518"
-        ].map({ (id) -> FilmTableViewCellData in
-            self.cellDataForFilm(withId: id)
-        })
+        self.filmList = self.filmList ?? [
+            FilmReference(
+                id: "tt6998518",
+                name: "Mandy"
+            )
+        ]
     }
     
-    lazy var imdbScraper = ImdbScraper()
-    
+
     func cellDataForFilm(withId: String) -> FilmTableViewCellData {
         
         let getFilmPromise = imdbScraper.getFilmWith(id: withId)
@@ -159,6 +164,13 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let vc = FilmDetailsViewController.filmDetailsViewController() else { return }
+        guard let filmData = self.filmList?[indexPath.row] else { return }
+        self.navigationController?.pushViewController(vc, animated: true)
+        vc.filmPromise = imdbScraper.getFilmWith(id: filmData.id)
     }
     
 

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PromiseKit
 
 extension String {
     
@@ -25,3 +26,11 @@ extension String {
 }
 
 
+extension Promise {
+    func peek(_ fn: @escaping (T) -> Void) -> Promise<T> {
+        return self.map({ (value) -> T in
+            fn(value)
+            return value
+        })
+    }
+}
