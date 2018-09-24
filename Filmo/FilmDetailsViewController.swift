@@ -10,6 +10,10 @@ import Foundation
 import UIKit
 import PromiseKit
 
+protocol FilmDetailsViewControllerDelegate {
+    func addButtonPressed(sender: FilmDetailsViewController?, button: UIButton?)
+}
+
 class FilmDetailsViewController: UIViewController {
     
     @IBOutlet weak var imgViewPoster: UIImageView?
@@ -101,7 +105,7 @@ class FilmDetailsViewController: UIViewController {
     func updateWithFilm(film: Film) {
         
         self.lblTitle?.text = film.name
-        self.lblSynopsis?.text = film.synopsis
+        self.lblSynopsis?.text = [film.synopsis, film.synopsis, film.synopsis].compactMap({ $0 }).joined(separator: "\n\n")
         self.lblSynopsis?.isHidden = (film.synopsis == nil)
         
         self.imagePromise = film.imagePath.map({ (path) -> Promise<UIImage> in

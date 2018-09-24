@@ -83,7 +83,7 @@ class ImdbFilmScraper: ImdbPageScraper {
                 writers: writer,
                 stars: stars,
                 language: nil,
-                country: document.firstChild(xpath: ratingPath)?.stringValue.trimmingCharacters(in: .whitespacesAndNewlines),
+                country: nil,
                 awards: nil,
                 rating: document.firstChild(xpath: ratingPath)?.stringValue.trimmingCharacters(in: .whitespacesAndNewlines),
                 imagePath: document.firstChild(xpath: imagePath)?.attr("src"),

@@ -58,8 +58,10 @@ class FilmSearchViewController: UIViewController, UISearchBarDelegate, UITableVi
     lazy var imdb = ImdbScraper()
     lazy var promiseDebouncer = PromiseDebouncer(timeInterval: 1.0)
     
-    @IBOutlet var tableView: UITableView?
-    @IBOutlet var searchBar: UISearchBar?
+    @IBOutlet weak var tableView: UITableView?
+    @IBOutlet weak var searchBar: UISearchBar?
+    @IBOutlet weak var lblStatus: UILabel?
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView?
     
     var searchResults: [MediaSearchResult]? = nil {
         didSet {
@@ -69,6 +71,10 @@ class FilmSearchViewController: UIViewController, UISearchBarDelegate, UITableVi
     
     override func viewDidLoad() {
         self.tableView?.tableFooterView = UIView()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.searchBar?.becomeFirstResponder()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -118,12 +124,58 @@ class FilmSearchViewController: UIViewController, UISearchBarDelegate, UITableVi
         
     }
     
+    var currentPromise: Promise<Array<MediaSearchResult>>? = nil
+    
+    
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.promiseDebouncer.debouncedPromise(input: searchText).then { (search) -> Promise<Array<MediaSearchResult>> in
+        
+        let text = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard text != "" else {
+            self.lblStatus?.text = "Enter the name of a film to begin searching..."
+            self.searchResults = nil
+            self.activityIndicator?.stopAnimating()
+            self.currentPromise = nil
+            return
+        }
+        
+        self.lblStatus?.text = nil
+        
+        let prom = self.promiseDebouncer.debouncedPromise(input: text).then { (search) -> Promise<Array<MediaSearchResult>> in
+            self.activityIndicator?.startAnimating()
+            self.searchResults = nil
             return self.imdb.getFilmTitlesMatching(search: search)
-        }.done { (result) in
+        }
+        
+        self.currentPromise = prom
+        
+        prom.done { (result) in
+            
+            guard self.currentPromise === prom else {
+                throw PromiseDebouncer.DebouncerError.cancelled
+            }
+            
+            self.activityIndicator?.stopAnimating()
+            
+            guard result.count > 0 else {
+                throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Zero results for '\(searchText)'."])
+            }
+            
             self.searchResults = result
-        }.cauterize()
+            
+        }.catch { (err) in
+            if let error = err as? PromiseDebouncer.DebouncerError {
+                if error == PromiseDebouncer.DebouncerError.cancelled {
+                    return
+                }
+            }
+            self.lblStatus?.text = err.localizedDescription
+        }
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
     
 }
