@@ -18,6 +18,7 @@ class FilmDetailsViewController: UIViewController {
     @IBOutlet weak var lblGenres: UILabel?
     @IBOutlet weak var lblDirector: UILabel?
     @IBOutlet weak var lblWriter: UILabel?
+    @IBOutlet weak var lblStars: UILabel?
     @IBOutlet weak var lblLanguage: UILabel?
     @IBOutlet weak var lblCountry: UILabel?
     @IBOutlet weak var lblAwards: UILabel?
@@ -31,6 +32,7 @@ class FilmDetailsViewController: UIViewController {
                 self.lblGenres,
                 self.lblDirector,
                 self.lblWriter,
+                self.lblStars,
                 self.lblLanguage,
                 self.lblCountry,
                 self.lblAwards,
@@ -107,8 +109,9 @@ class FilmDetailsViewController: UIViewController {
         })
         
         self.setOrHide(label: self.lblGenres, value: film.genres)
-        self.setOrHide(label: self.lblDirector, value: film.director)
-        self.setOrHide(label: self.lblWriter, value: film.writer)
+        self.setOrHide(label: self.lblDirector, value: film.directors?.names)
+        self.setOrHide(label: self.lblWriter, value: film.writers?.names)
+        self.setOrHide(label: self.lblStars, value: film.stars?.names)
         self.setOrHide(label: self.lblLanguage, value: film.language)
         self.setOrHide(label: self.lblCountry, value: film.country)
         self.setOrHide(label: self.lblAwards, value: film.awards)

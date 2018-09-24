@@ -12,24 +12,6 @@ import Alamofire
 import Fuzi
 import WebKit
 
-struct Film {
-    let id: String
-    let name: String?
-    let year: String?
-    let released: String?
-    let runtime: String?
-    let genres: String?
-    let director: String?
-    let writer: String?
-    let language: String?
-    let country: String?
-    let awards: String?
-    let rating: String?
-    let imagePath: String?
-    let resourcePath: String?
-    let synopsis: String?
-}
-
 
 
 

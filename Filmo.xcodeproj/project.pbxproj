@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		01ACD5DB487C0A99DD5B67E8 /* Pods_FilmoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 702AFC027C562A638203C679 /* Pods_FilmoUITests.framework */; };
 		25B6DCFF32B66362F499E1D4 /* Pods_FilmoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E154955C915219BF8ED6568F /* Pods_FilmoTests.framework */; };
+		641A96EE2158AE6300F65BC0 /* Film.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641A96ED2158AE6300F65BC0 /* Film.swift */; };
+		641A96F02158AECC00F65BC0 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641A96EF2158AECC00F65BC0 /* Person.swift */; };
+		641A96F32158AEEC00F65BC0 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641A96F22158AEEC00F65BC0 /* StringExtensions.swift */; };
 		643894D7215654E2003563E0 /* ImdbPageScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643894D6215654E2003563E0 /* ImdbPageScraper.swift */; };
 		643894D921565510003563E0 /* ImdbFilmScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643894D821565510003563E0 /* ImdbFilmScraper.swift */; };
 		643894DB21576C3E003563E0 /* FilmDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643894DA21576C3E003563E0 /* FilmDetailsViewController.swift */; };
@@ -44,6 +47,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		641A96ED2158AE6300F65BC0 /* Film.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Film.swift; sourceTree = "<group>"; };
+		641A96EF2158AECC00F65BC0 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		641A96F22158AEEC00F65BC0 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		643894D6215654E2003563E0 /* ImdbPageScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImdbPageScraper.swift; sourceTree = "<group>"; };
 		643894D821565510003563E0 /* ImdbFilmScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImdbFilmScraper.swift; sourceTree = "<group>"; };
 		643894DA21576C3E003563E0 /* FilmDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmDetailsViewController.swift; sourceTree = "<group>"; };
@@ -116,6 +122,23 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		641A96EC2158AE5400F65BC0 /* Data Model */ = {
+			isa = PBXGroup;
+			children = (
+				641A96ED2158AE6300F65BC0 /* Film.swift */,
+				641A96EF2158AECC00F65BC0 /* Person.swift */,
+			);
+			path = "Data Model";
+			sourceTree = "<group>";
+		};
+		641A96F12158AEE100F65BC0 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				641A96F22158AEEC00F65BC0 /* StringExtensions.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
 		643894D5215654D0003563E0 /* Scrapers */ = {
 			isa = PBXGroup;
 			children = (
@@ -150,6 +173,8 @@
 		64C2FEFE2144B4D100D4D7A0 /* Filmo */ = {
 			isa = PBXGroup;
 			children = (
+				641A96F12158AEE100F65BC0 /* Utility */,
+				641A96EC2158AE5400F65BC0 /* Data Model */,
 				64C2FEFF2144B4D100D4D7A0 /* AppDelegate.swift */,
 				643894DA21576C3E003563E0 /* FilmDetailsViewController.swift */,
 				64C2FF012144B4D100D4D7A0 /* ViewController.swift */,
@@ -408,11 +433,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				641A96F32158AEEC00F65BC0 /* StringExtensions.swift in Sources */,
 				64C2FF022144B4D100D4D7A0 /* ViewController.swift in Sources */,
 				643894D7215654E2003563E0 /* ImdbPageScraper.swift in Sources */,
 				64C2FF002144B4D100D4D7A0 /* AppDelegate.swift in Sources */,
 				643894D921565510003563E0 /* ImdbFilmScraper.swift in Sources */,
+				641A96F02158AECC00F65BC0 /* Person.swift in Sources */,
 				644FD9642155F2940000D108 /* ImdbScraper.swift in Sources */,
+				641A96EE2158AE6300F65BC0 /* Film.swift in Sources */,
 				64C2FF302144B7E900D4D7A0 /* ListViewController.swift in Sources */,
 				643894DD215773AC003563E0 /* FilmSearchViewController.swift in Sources */,
 				64C2FF2E2144B59E00D4D7A0 /* GradientView.swift in Sources */,
