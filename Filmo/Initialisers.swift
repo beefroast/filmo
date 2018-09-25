@@ -10,12 +10,17 @@ import Foundation
 
 
 
-let sharedImdbInstance = ImdbScraper.init(
-    filmScraper: ImdbFilmScraper().typeErased()
-).withInMemoryCache()
+let sharedImdbInstance = ImdbScraper.init(filmScraper: ImdbFilmScraper().typeErased())
+    .withInMemoryCache()
 
-extension ImdbProvider {
+let sharedBackend = StubBackend()
+
+
+extension ServiceProvider {
     convenience init() {
-        self.init(imdb: sharedImdbInstance)
+        self.init(
+            backend: sharedBackend,
+            imdb: sharedImdbInstance
+        )
     }
 }

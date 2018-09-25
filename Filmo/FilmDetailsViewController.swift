@@ -30,7 +30,7 @@ class FilmDetailsViewController: UIViewController {
     @IBOutlet weak var lblRuntime: UILabel?
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView?
     
-    lazy var imdb = ImdbProvider().get()
+    lazy var imdb = ServiceProvider().imdb
     
     var optionalFields: [UILabel?] {
         get {

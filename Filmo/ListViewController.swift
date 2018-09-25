@@ -56,7 +56,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     @IBOutlet weak var tableView: UITableView?
 
-    lazy var imdb = ImdbProvider().get()
+    lazy var imdb = ServiceProvider().imdb
     
     var filmList: [FilmReference]? = nil {
         didSet {
