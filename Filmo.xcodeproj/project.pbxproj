@@ -17,6 +17,7 @@
 		6411AF122159C55100460B1F /* FirebaseBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6411AF112159C55100460B1F /* FirebaseBackend.swift */; };
 		6411AF142159C56900460B1F /* StubBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6411AF132159C56900460B1F /* StubBackend.swift */; };
 		6411AF172159C57B00460B1F /* ServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6411AF162159C57B00460B1F /* ServiceProvider.swift */; };
+		6411AF192159C78900460B1F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6411AF182159C78900460B1F /* GoogleService-Info.plist */; };
 		641A96EE2158AE6300F65BC0 /* Film.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641A96ED2158AE6300F65BC0 /* Film.swift */; };
 		641A96F02158AECC00F65BC0 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641A96EF2158AECC00F65BC0 /* Person.swift */; };
 		641A96F32158AEEC00F65BC0 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641A96F22158AEEC00F65BC0 /* StringExtensions.swift */; };
@@ -65,6 +66,7 @@
 		6411AF112159C55100460B1F /* FirebaseBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseBackend.swift; sourceTree = "<group>"; };
 		6411AF132159C56900460B1F /* StubBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubBackend.swift; sourceTree = "<group>"; };
 		6411AF162159C57B00460B1F /* ServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceProvider.swift; sourceTree = "<group>"; };
+		6411AF182159C78900460B1F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		641A96ED2158AE6300F65BC0 /* Film.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Film.swift; sourceTree = "<group>"; };
 		641A96EF2158AECC00F65BC0 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		641A96F22158AEEC00F65BC0 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 		64C2FEFE2144B4D100D4D7A0 /* Filmo */ = {
 			isa = PBXGroup;
 			children = (
+				6411AF182159C78900460B1F /* GoogleService-Info.plist */,
 				6411AF152159C57100460B1F /* Services */,
 				6411AF0E2159C49400460B1F /* Backend */,
 				641A96F42158BFBF00F65BC0 /* Imdb */,
@@ -382,6 +385,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				64C2FF0A2144B4D300D4D7A0 /* LaunchScreen.storyboard in Resources */,
+				6411AF192159C78900460B1F /* GoogleService-Info.plist in Resources */,
 				64C2FF072144B4D300D4D7A0 /* Assets.xcassets in Resources */,
 				64C2FF052144B4D100D4D7A0 /* Main.storyboard in Resources */,
 			);
@@ -431,13 +435,21 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Filmo/Pods-Filmo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Fuzi/Fuzi.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Fuzi.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

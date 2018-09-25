@@ -9,6 +9,11 @@
 import Foundation
 import PromiseKit
 
+enum BackendError: Error {
+    case notImplemented
+    case notAuthenticated
+    case invalidPayload(Any?)
+}
 
 protocol Backend {
     

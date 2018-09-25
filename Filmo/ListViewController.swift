@@ -80,12 +80,18 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
 
         self.tableView?.separatorColor = UIColor.clear
         
-        self.filmList = self.filmList ?? [
-            FilmReference(
-                id: "tt6998518",
-                name: "Mandy"
-            )
-        ]
+        let backend = ServiceProvider().backend
+        
+        backend.login(user: "benjamin.frost.dev@gmail.com", password: "testpassword").then { () -> Promise<Array<String>> in
+            return backend.save(film: "tt6998518")
+        }.done { (films) in
+            self.filmList = films.map({ (id) -> FilmReference in
+                return FilmReference(id: id, name: nil)
+            })
+        }.catch { (error) in
+            print("Error")
+        }
+
     }
     
 

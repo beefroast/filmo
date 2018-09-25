@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+        <string>ca-app-pub-3940256099942544/2934735716</string>
+        <key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+        <string>ca-app-pub-3940256099942544/4411468910</string>
+        <key>CLIENT_ID</key>
+        <string>831029401849-fmgmb781g3aus4pri66krrndqncvr03m.apps.googleusercontent.com</string>
+        <key>REVERSED_CLIENT_ID</key>
+        <string>com.googleusercontent.apps.831029401849-fmgmb781g3aus4pri66krrndqncvr03m</string>
+        <key>API_KEY</key>
+        <string>AIzaSyB867YT61IluiekL5HZSno6autJyLMKSDg</string>
+        <key>GCM_SENDER_ID</key>
+        <string>831029401849</string>
+        <key>PLIST_VERSION</key>
+        <string>1</string>
+        <key>BUNDLE_ID</key>
+        <string>jonathon.dollal.Filmo</string>
+        <key>PROJECT_ID</key>
+        <string>filmo-d8c5a</string>
+        <key>STORAGE_BUCKET</key>
+        <string>filmo-d8c5a.appspot.com</string>
+        <key>IS_ADS_ENABLED</key>
+        <true></true>
+        <key>IS_ANALYTICS_ENABLED</key>
+        <false></false>
+        <key>IS_APPINVITE_ENABLED</key>
+        <false></false>
+        <key>IS_GCM_ENABLED</key>
+        <true></true>
+        <key>IS_SIGNIN_ENABLED</key>
+        <true></true>
+        <key>GOOGLE_APP_ID</key>
+        <string>1:831029401849:ios:0662d0c78c3687c4</string>
+        <key>DATABASE_URL</key>
+        <string>https://filmo-d8c5a.firebaseio.com</string>
+    </dict>
+</plist>

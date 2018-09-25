@@ -7,6 +7,10 @@ target 'Filmo' do
 
   # Pods for Filmo
 
+	pod "Firebase/Core"
+	pod 'Firebase/Auth'
+  	pod 'Firebase/Database'
+
 	pod "PromiseKit"
 	pod "Fuzi"
 	pod "Alamofire"

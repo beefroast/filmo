@@ -13,7 +13,9 @@ import Foundation
 let sharedImdbInstance = ImdbScraper.init(filmScraper: ImdbFilmScraper().typeErased())
     .withInMemoryCache()
 
-let sharedBackend = StubBackend()
+let firebaseInitialiser = DefaultFirebaseInitialiser()
+
+let sharedBackend = FirebaseBackend(initialiser: firebaseInitialiser)
 
 
 extension ServiceProvider {
