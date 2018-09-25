@@ -23,10 +23,25 @@ protocol Backend {
     func getSavedFilms() -> Promise<Array<String>>
     func save(film: String) -> Promise<Array<String>>
     func remove(film: String) -> Promise<Array<String>>
+    
+    func getFilmListReferences() -> Promise<Array<FilmListReference>>
+    func getFilmList(id: String) -> Promise<FilmList>
+}
 
+extension Backend {
+    func getFilmLists() -> Promise<Array<FilmList>> {
+        return self.getFilmListReferences().then({ (listRefs) -> Promise<Array<FilmList>> in
+            let promises = listRefs.map({ (liftRef) -> Promise<FilmList> in
+                return self.getFilmList(id: liftRef.id)
+            })
+            return when(fulfilled: promises)
+        })
+    }
 }
 
 class StubBackend: Backend {
+
+    
     
     func login(user: String, password: String) -> Promise<Void> {
         return Promise()
@@ -52,6 +67,14 @@ class StubBackend: Backend {
             savedFilms.remove(at: i)
         }
         return self.getSavedFilms()
+    }
+    
+    func getFilmListReferences() -> Promise<Array<FilmListReference>> {
+        fatalError()
+    }
+    
+    func getFilmList(id: String) -> Promise<FilmList> {
+        fatalError()
     }
     
 }

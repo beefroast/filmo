@@ -18,19 +18,19 @@ protocol FirebaseInitialiser {
 
 extension DatabaseReference {
     
-    func observeSingleEventPromise<T>(of type: DataEventType) -> Promise<T> {
-        return Promise { seal in
-            self.observe(type, with: { (snapshot) in
-                guard let x = snapshot.value as? T else {
-                    seal.reject(BackendError.invalidPayload(snapshot))
-                    return
-                }
-                seal.fulfill(x)
-            }) { (error) in
-                seal.reject(error)
-            }
-        }
-    }
+//    func observeSingleEventPromise<T>(of type: DataEventType) -> Promise<T> {
+//        return Promise { seal in
+//            self.observeSingleEvent(of: type, with: { (snapshot) in
+//                guard let x = snapshot.value as? T else {
+//                    seal.reject(BackendError.invalidPayload(snapshot))
+//                    return
+//                }
+//                seal.fulfill(x)
+//            }) { (error) in
+//                seal.reject(error)
+//            }
+//        }
+//    }
     
     func setValuePromise(value: Any?) -> Promise<Void> {
         return Promise { seal in
@@ -44,7 +44,23 @@ extension DatabaseReference {
             }
         }
     }
-    
+}
+
+extension DatabaseQuery {
+
+    func observeSingleEventPromise<T>(of type: DataEventType) -> Promise<T> {
+        return Promise { seal in
+            self.observeSingleEvent(of: type, with: { (snapshot) in
+                guard let x = snapshot.value as? T else {
+                    seal.reject(BackendError.invalidPayload(snapshot))
+                    return
+                }
+                seal.fulfill(x)
+            }) { (error) in
+                seal.reject(error)
+            }
+        }
+    }
 }
 
 class DefaultFirebaseInitialiser: FirebaseInitialiser {
@@ -60,6 +76,8 @@ class DefaultFirebaseInitialiser: FirebaseInitialiser {
 }
 
 
+
+
 class FirebaseBackend: Backend {
     
     lazy var database = Database.database().reference()
@@ -67,7 +85,6 @@ class FirebaseBackend: Backend {
     init(initialiser: FirebaseInitialiser) {
         initialiser.initialiseIfNeeded()
     }
-    
     
     func login(user: String, password: String) -> Promise<Void> {
         
@@ -112,6 +129,8 @@ class FirebaseBackend: Backend {
         }
     }
 
+
+    
     func getSavedFilms() -> Promise<Array<String>> {
         
         guard let user = Auth.auth().currentUser else {
@@ -155,6 +174,44 @@ class FirebaseBackend: Backend {
                 return editedFilms
             })
         }
+    }
+    
+    
+    
+    // GETS FILM REFERENCES
+    
+    func getFilmListReferences() -> Promise<Array<FilmListReference>> {
+        
+        guard let user = Auth.auth().currentUser else {
+            return Promise.init(error: BackendError.notAuthenticated)
+        }
+        
+        return database.child("members/\(user.uid)").observeSingleEventPromise(of: .value).map { (dictionary: [String: [String: Any]]) -> [FilmListReference] in
+            return dictionary.map({ (id, values) -> FilmListReference in
+                return FilmListReference(
+                    id: id,
+                    name: dictionary["name"] as? String,
+                    isOwner: dictionary["owner"] as? Bool
+                )
+            })
+        }
+    }
+    
+    func getFilmList(id: String) -> Promise<FilmList> {
+        
+        guard let user = Auth.auth().currentUser else {
+            return Promise.init(error: BackendError.notAuthenticated)
+        }
+        
+        return database.child("filmLists/\(id)").observeSingleEventPromise(of: .value).map({ (dictionary: [String: Any]) -> FilmList in
+            return FilmList(
+                id: id,
+                name: dictionary["name"] as? String,
+                owner: User(id: ""),
+                members: [],
+                films: []
+            )
+        })
     }
     
     

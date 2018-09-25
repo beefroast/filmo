@@ -23,6 +23,12 @@ import Foundation
 //    }
 //}
 
+struct FilmListReference {
+    let id: String
+    let name: String?
+    let isOwner: Bool?
+}
+
 struct FilmList {
     let id: String
     let name: String?
