@@ -17,21 +17,6 @@ protocol FirebaseInitialiser {
 }
 
 extension DatabaseReference {
-    
-//    func observeSingleEventPromise<T>(of type: DataEventType) -> Promise<T> {
-//        return Promise { seal in
-//            self.observeSingleEvent(of: type, with: { (snapshot) in
-//                guard let x = snapshot.value as? T else {
-//                    seal.reject(BackendError.invalidPayload(snapshot))
-//                    return
-//                }
-//                seal.fulfill(x)
-//            }) { (error) in
-//                seal.reject(error)
-//            }
-//        }
-//    }
-    
     func setValuePromise(value: Any?) -> Promise<Void> {
         return Promise { seal in
             self.setValue(value) { (error, ref) in
@@ -47,7 +32,6 @@ extension DatabaseReference {
 }
 
 extension DatabaseQuery {
-
     func observeSingleEventPromise<T>(of type: DataEventType) -> Promise<T> {
         return Promise { seal in
             self.observeSingleEvent(of: type, with: { (snapshot) in
@@ -79,6 +63,8 @@ class DefaultFirebaseInitialiser: FirebaseInitialiser {
 
 
 class FirebaseBackend: Backend {
+
+    
     
     lazy var database = Database.database().reference()
     
@@ -190,8 +176,8 @@ class FirebaseBackend: Backend {
             return dictionary.map({ (id, values) -> FilmListReference in
                 return FilmListReference(
                     id: id,
-                    name: dictionary["name"] as? String,
-                    isOwner: dictionary["owner"] as? Bool
+                    name: values["name"] as? String,
+                    isOwner: values["owner"] as? Bool
                 )
             })
         }
@@ -214,6 +200,13 @@ class FirebaseBackend: Backend {
         })
     }
     
+    func add(film: FilmReference, toList: FilmListReference) -> Promise<Void> {
+        return BackendError.notImplemented.toPromise()
+    }
+    
+    func remove(film: FilmReference, fromList: FilmListReference) -> Promise<Void> {
+        return BackendError.notImplemented.toPromise()
+    }
     
     
 }

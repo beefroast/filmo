@@ -82,12 +82,10 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let backend = ServiceProvider().backend
         
-        backend.login(user: "benjamin.frost.dev@gmail.com", password: "testpassword").then { () -> Promise<Array<String>> in
-            return backend.save(film: "tt6998518")
+        backend.login(user: "benjamin.frost.dev@gmail.com", password: "testpassword").then { () -> Promise<Array<FilmList>> in
+            return backend.getFilmLists()
         }.done { (films) in
-            self.filmList = films.map({ (id) -> FilmReference in
-                return FilmReference(id: id, name: nil)
-            })
+            print(films)
         }.catch { (error) in
             print("Error")
         }

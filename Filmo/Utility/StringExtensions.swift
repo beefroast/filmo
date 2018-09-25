@@ -82,6 +82,12 @@ extension Array {
     }
 }
 
+extension Error {
+    func toPromise<T>() -> Promise<T> {
+        return Promise<T>.init(error: self)
+    }
+}
+
 
 
 
