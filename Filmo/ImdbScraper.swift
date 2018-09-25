@@ -15,12 +15,6 @@ import WebKit
 
 
 
-struct MediaSearchResult {
-    let id: String
-    let title: String
-    let year: String
-    let type: String
-}
 
 enum ScraperError: Error {
     case unknown
@@ -32,52 +26,7 @@ enum ScraperError: Error {
     case couldntGet(URLConvertible, Error)
 }
 
-extension Array {
-    var second: Element? {
-        get {
-            guard self.count >= 2 else { return nil }
-            return self[1]
-        }
-    }
-}
 
-extension Promise {
-    
-    static func from(fn: (() throws -> T)) -> Promise<T> {
-        do {
-            return Promise<T>.value(try fn())
-        } catch {
-            return Promise<T>.init(error: error)
-        }
-    }
-    
-    func guarantee() -> Guarantee<T?> {
-        return self.map { (value) -> T? in
-            return value
-        }.recover { (_) -> Guarantee<T?> in
-            return Guarantee.value(nil)
-        }
-    }
-    
-}
-
-extension SessionManager {
-    
-    func requestPromise(url: URLConvertible, method: HTTPMethod = .get) -> Promise<Data> {
-        return Promise<Data> { seal in
-            self.request(url, method: method).validate().responseData(completionHandler: { (dataResponse) in
-                
-                if let error = dataResponse.error {
-                    seal.reject(error)
-                    return
-                }
-                
-                seal.fulfill(dataResponse.data ?? Data())
-            })
-        }
-    }
-
-}
 
 
 
@@ -143,10 +92,34 @@ class ImdbSearchPageFinder: ImdbPageFinder {
 
 
 
+typealias FilmFromId = ((String) -> Film)
+typealias PersonFromId = ((String) -> Person)
 
+class ImdbProvider {
+    
+    let imdb: Imdb
+    
+    init(imdb: Imdb) {
+        self.imdb = imdb
+    }
+    
+    func get() -> Imdb {
+        return self.imdb
+    }
+}
 
 
 class ImdbScraper: Imdb {
+
+    
+    
+    let filmScraper: AnyScraper<FilmFromId>
+    
+    init(filmScraper: AnyScraper<FilmFromId>) {
+        
+        self.filmScraper = filmScraper
+    }
+    
     
     // TODO: Inject
     lazy var sessionManager = Alamofire.SessionManager(configuration: URLSessionConfiguration.default)
@@ -172,15 +145,31 @@ class ImdbScraper: Imdb {
         }
     }
     
-    func getFilmWith(id: String) -> Promise<Film> {
-        print("getFilmWith(id: \(id))")
-        return self.getFilmWith(id: id, scraper: ImdbFilmScraper().typeErased())
+    func getImdbPageForPerson(id: String) -> Promise<HTMLDocument> {
+        // https://www.imdb.com/name/nm0181903
+        return self.sessionManager.requestPromise(url: "https://www.imdb.com/name/\(id)").map { (data) -> HTMLDocument in
+            return try HTMLDocument(data: data)
+        }
     }
     
-    func getFilmWith(id: String, scraper: AnyScraper<((String) -> Film)>) -> Promise<Film> {
+    func getFilmWith(id: String) -> Promise<Film> {
+        return self.getFilmWith(id: id, scraper: self.filmScraper)
+    }
+    
+    func getFilmWith(id: String, scraper: AnyScraper<FilmFromId>) -> Promise<Film> {
         return self.getImdbPageForTitle(id: id).map { (document) -> Film in
             return try scraper.parse(document: document)(id)
         }
+    }
+    
+    func getPersonWith(id: String) -> Promise<Person> {
+        fatalError()
+    }
+    
+    func getPersonWith(id: String, scraper: AnyScraper<PersonFromId>) -> Promise<Person> {
+        return self.getImdbPageForPerson(id: id).map({ (document) -> Person in
+            return try scraper.parse(document: document)(id)
+        })
     }
 
     

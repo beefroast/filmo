@@ -30,6 +30,8 @@ class FilmDetailsViewController: UIViewController {
     @IBOutlet weak var lblRuntime: UILabel?
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView?
     
+    lazy var imdb = ImdbProvider().get()
+    
     var optionalFields: [UILabel?] {
         get {
             return [
@@ -99,7 +101,7 @@ class FilmDetailsViewController: UIViewController {
         }
     }
     
-    lazy var imdb = ImdbScraper()
+    
     
     func updateWithFilm(film: Film) {
         

@@ -16,3 +16,14 @@ struct PersonReference {
     let id: String
     let name: String?
 }
+
+
+struct Person {
+    let id: String
+    let name: String?
+    let bio: String?
+    let birthdate: String?
+    let birthplace: String?
+    let imageUrl: String?
+    let filmography: [Credit]?
+}

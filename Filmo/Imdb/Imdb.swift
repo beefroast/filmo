@@ -11,6 +11,7 @@ import PromiseKit
 
 protocol Imdb {
     func getFilmWith(id: String) -> Promise<Film>
+    func getPersonWith(id: String) -> Promise<Person>
     func getFilmTitlesMatching(search: String) -> Promise<Array<MediaSearchResult>>
 }
 
@@ -24,6 +25,10 @@ class ImdbWrapper: Imdb {
     
     func getFilmWith(id: String) -> Promise<Film> {
         return imdb.getFilmWith(id: id)
+    }
+    
+    func getPersonWith(id: String) -> Promise<Person> {
+        return imdb.getPersonWith(id: id)
     }
     
     func getFilmTitlesMatching(search: String) -> Promise<Array<MediaSearchResult>> {

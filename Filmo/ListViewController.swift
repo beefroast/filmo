@@ -56,6 +56,8 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     @IBOutlet weak var tableView: UITableView?
 
+    lazy var imdb = ImdbProvider().get()
+    
     var filmList: [FilmReference]? = nil {
         didSet {
             guard let films = self.filmList else { return }
@@ -71,7 +73,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    lazy var imdbScraper = ImdbScraper().withInMemoryCache()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,7 +91,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     func cellDataForFilm(withId: String) -> FilmTableViewCellData {
         
-        let getFilmPromise = imdbScraper.getFilmWith(id: withId)
+        let getFilmPromise = imdb.getFilmWith(id: withId)
         
         let imagePromise = getFilmPromise.then { (film) -> Guarantee<UIImage?> in
             guard let path = film.imagePath else {
@@ -170,7 +172,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         guard let vc = FilmDetailsViewController.filmDetailsViewController() else { return }
         guard let filmData = self.filmList?[indexPath.row] else { return }
         self.navigationController?.pushViewController(vc, animated: true)
-        vc.filmPromise = imdbScraper.getFilmWith(id: filmData.id)
+        vc.filmPromise = imdb.getFilmWith(id: filmData.id)
     }
     
 
