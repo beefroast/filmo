@@ -48,11 +48,24 @@ exports.addUserToListTheyCreate = functions.database.ref('/filmLists/{listId}')
         return admin.database().ref('members/'+uid+'/'+listId).set({
             "name": name,
             "owner": true
-        })
-    
-//        return admin.database().ref('members/'+ uid + '/' + listId).push({
-//            "name": name,
-//            "owner": true
-//        });
-    
+        });
     });
+
+
+exports.removeUserFromListTheyDelete = functions.database.ref('/filmLists/{listId}')
+    .onDelete((snapshot, context) => {
+    
+        const uid = snapshot.child('owner').val();
+        const listId = context.params.listId;
+        const name = snapshot.child('name').val();
+    
+        console.log('uid = ' + uid);
+        console.log('listId = ' + listId);
+        console.log('name = ' + name);
+    
+        return admin.database().ref('members/'+uid+'/'+listId).remove();
+    });
+
+
+
+

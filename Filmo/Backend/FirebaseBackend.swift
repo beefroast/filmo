@@ -239,10 +239,36 @@ class FirebaseBackend: Backend {
         })
     }
     
+    func createListWith(name: String) -> Promise<FilmListReference> {
+        
+        guard let user = Auth.auth().currentUser else {
+            return Promise.init(error: BackendError.notAuthenticated)
+        }
+        
+        let databaseReference = database.child("filmLists").childByAutoId()
+        
+        let data = [
+            "name": name,
+            "owner": user.uid
+        ]
+        
+        return databaseReference.setValuePromise(value: data).map({ () -> FilmListReference in
+            
+            guard let id = databaseReference.key else {
+                throw BackendError.notImplemented
+            }
+            
+            return FilmListReference(id: id, name: name, isOwner: true)
+        })
+    }
+    
+    func delete(list: FilmListReference) -> Promise<Void> {
+        return database.child("filmLists/\(list.id)").removeValuePromise()
+    }
+    
     func rename(list: FilmListReference, name: String) -> Promise<Void> {
         return database.child("filmLists/\(list.id)/name").setValuePromise(value: name)
     }
-    
     
     func add(film: FilmReference, toList list: FilmListReference) -> Promise<Void> {
         // https://filmo-d8c5a.firebaseio.com/filmLists/111/films/tt0268126/name

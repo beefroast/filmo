@@ -45,6 +45,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             return backend.register(user: user, password: pass)
         
         }.then({ () -> Promise<Array<FilmListReference>> in
+            
+            backend.createListWith(name: "ANUBUS").done({ (ref) in
+                return backend.delete(list: ref)
+            }).done({ (_) in
+                print("Success")
+            }).catch({ (error) in
+                print(error)
+            })
+            
+            
             return backend.getFilmListReferences()
             
         }).reportProgress().done({ (filmLists) in

@@ -15,6 +15,8 @@ enum BackendError: Error {
     case invalidPayload(Any?)
 }
 
+struct FriendReference {}
+
 protocol Backend {
     
     // Authentication...
@@ -32,6 +34,8 @@ protocol Backend {
     func getFilmListReferences() -> Promise<Array<FilmListReference>>
     func getFilmList(id: String) -> Promise<FilmList>
     
+    func createListWith(name: String) -> Promise<FilmListReference>
+    func delete(list: FilmListReference) -> Promise<Void>
     func rename(list: FilmListReference, name: String) -> Promise<Void>
     func add(film: FilmReference, toList: FilmListReference) -> Promise<Void>
     func remove(film: FilmReference, fromList: FilmListReference) -> Promise<Void>
@@ -103,6 +107,15 @@ class StubBackend: Backend {
     }
     
     func getFilmList(id: String) -> Promise<FilmList> {
+        return BackendError.notImplemented.toPromise()
+    }
+    
+    
+    func createListWith(name: String) -> Promise<FilmListReference> {
+        return BackendError.notImplemented.toPromise()
+    }
+    
+    func delete(list: FilmListReference) -> Promise<Void> {
         return BackendError.notImplemented.toPromise()
     }
     
