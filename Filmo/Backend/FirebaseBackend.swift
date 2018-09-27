@@ -77,6 +77,9 @@ class DefaultFirebaseInitialiser: FirebaseInitialiser {
 
 
 class FirebaseBackend: Backend {
+    
+    
+    
 
     
     
@@ -86,10 +89,38 @@ class FirebaseBackend: Backend {
         initialiser.initialiseIfNeeded()
     }
     
+    func isUserLoggedIn() -> Guarantee<Bool> {
+        return Guarantee<Bool>.value(Auth.auth().currentUser != nil)
+    }
+    
     func login(user: String, password: String) -> Promise<Void> {
         
         return Promise<Void> { seal in
             Auth.auth().signIn(withEmail: user, password: password, completion: { (result, error) in
+                
+                if let err = error {
+                    seal.reject(err)
+                }
+                
+                seal.fulfill(())
+            })
+        }
+    }
+    
+    func logout() -> Promise<Void> {
+        return Promise.from {
+            try Auth.auth().signOut()
+        }
+    }
+    
+    func register(user: String, password: String) -> Promise<Void> {
+        
+        guard Auth.auth().currentUser == nil else {
+            return Promise()
+        }
+        
+        return Promise<Void> { seal in
+            Auth.auth().createUser(withEmail: user, password: password, completion: { (result, error) in
                 
                 if let err = error {
                     seal.reject(err)
@@ -116,31 +147,7 @@ class FirebaseBackend: Backend {
             })
         }
     }
-    
-    func register(user: String, password: String) -> Promise<Void> {
-        
-        guard Auth.auth().currentUser == nil else {
-            return Promise()
-        }
-        
-        return Promise<Void> { seal in
-            Auth.auth().createUser(withEmail: user, password: password, completion: { (result, error) in
-                
-                if let err = error {
-                    seal.reject(err)
-                }
-                
-                seal.fulfill(())
-            })
-        }
-    }
-    
-    
-    func logout() -> Promise<Void> {
-        return Promise.from {
-            try Auth.auth().signOut()
-        }
-    }
+
 
 
     

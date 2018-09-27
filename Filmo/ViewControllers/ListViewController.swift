@@ -58,6 +58,9 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     lazy var imdb = ServiceProvider().imdb
     
+    
+    
+    
     var filmList: [FilmReference]? = nil {
         didSet {
             guard let films = self.filmList else { return }
@@ -82,25 +85,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let backend = ServiceProvider().backend
         
-        backend.login(user: "benjamin.frost.dev@gmail.com", password: "testpassword").then { (_) -> Promise<Void> in
-            backend.deregister()
-            
-        }.recover { (err) in
-            
-            guard let error = err as? BackendError else { throw err }
-            
-            switch error {
-            case .notImplemented: return
-            default: throw err
-            }
-            
-        }.then { (_) -> Promise<Void> in
-            backend.register(user: "benjamin.frost.dev@gmail.com", password: "testpassword")
-            
-        }.then { () -> Promise<Array<FilmList>> in
-            return backend.getFilmLists()
-            
-        }.map { (filmLists) -> FilmList in
+        backend.getFilmLists().map { (filmLists) -> FilmList in
             guard let list = filmLists.first else { throw BackendError.notImplemented }
             return list
             
@@ -119,7 +104,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         }.catch { (error) in
             print(error)
         }
-
     }
     
 

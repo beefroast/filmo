@@ -17,7 +17,11 @@ enum BackendError: Error {
 
 protocol Backend {
     
+    // Authentication...
+    
+    func isUserLoggedIn() -> Guarantee<Bool>
     func login(user: String, password: String) -> Promise<Void>
+    func logout() -> Promise<Void>
     func register(user: String, password: String) -> Promise<Void>
     func deregister() -> Promise<Void>
     
@@ -44,7 +48,14 @@ extension Backend {
 }
 
 class StubBackend: Backend {
-
+    
+    func isUserLoggedIn() -> Guarantee<Bool> {
+        return Guarantee<Bool>.value(false)
+    }
+    
+    func logout() -> Promise<Void> {
+        return BackendError.notImplemented.toPromise()
+    }
     
     func login(user: String, password: String) -> Promise<Void> {
         return Promise()
