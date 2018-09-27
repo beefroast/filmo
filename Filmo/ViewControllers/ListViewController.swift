@@ -197,7 +197,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         vc.delegate = ViewFilmDetailsViewControllerDelegate(onDeleteFilm: { [weak self] (film) in
             
             guard let list = self?.filmListPromise?.value else { return }
-            let listRef = FilmListReference(id: list.id, name: nil, isOwner: nil)
+            let listRef = FilmListReference(id: list.id, name: nil, owner: nil)
             let backend = ServiceProvider().backend
             
             backend.remove(film: film, fromList: listRef).reportProgress().done({ [weak self] () in
@@ -214,7 +214,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             guard let list = self?.filmListPromise?.value else { return }
             
             let backend = ServiceProvider().backend
-            let addFilm = backend.add(film: film, toList: FilmListReference(id: list.id, name: list.name, isOwner: nil))
+            let addFilm = backend.add(film: film, toList: FilmListReference(id: list.id, name: list.name, owner: nil))
             
             addFilm.reportProgress().done { [weak self] () in
                 guard let this = self else { return }

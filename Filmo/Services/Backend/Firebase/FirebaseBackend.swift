@@ -45,7 +45,12 @@ extension DatabaseReference {
     }
 }
 
+
+
 extension DatabaseQuery {
+    
+    
+    
     func observeSingleEventPromise<T>(of type: DataEventType) -> Promise<T> {
         return Promise { seal in
             self.observeSingleEvent(of: type, with: { (snapshot) in
@@ -211,7 +216,7 @@ class FirebaseBackend: Backend {
                 return FilmListReference(
                     id: id,
                     name: values["name"] as? String,
-                    isOwner: values["owner"] as? Bool
+                    owner: values["owner"] as? String
                 )
             })
         }
@@ -232,9 +237,8 @@ class FirebaseBackend: Backend {
             return FilmList(
                 id: id,
                 name: dictionary["name"] as? String,
-                owner: User(id: ""),
-                members: [],
-                films: filmReferences ?? []
+                owner: dictionary["owner"] as? String,
+                films: filmReferences
             )
         })
     }
@@ -258,7 +262,7 @@ class FirebaseBackend: Backend {
                 throw BackendError.notImplemented
             }
             
-            return FilmListReference(id: id, name: name, isOwner: true)
+            return FilmListReference(id: id, name: name, owner: user.uid)
         })
     }
     

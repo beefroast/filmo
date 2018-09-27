@@ -8,32 +8,41 @@
 
 import Foundation
 
-//"filmList": {
-//    "filmListId": {
-//        "name": "Watch List",
-//        "owner": "ownerId",
-//        "members": [
-//        "memberId",
-//        "anotherMemberId"
-//        ],
-//        "films": [
-//        "filmId",
-//        "anotherFilmId"
-//        ]
-//    }
-//}
 
-struct FilmListReference {
+class FilmListReference {
+    
     let id: String
     let name: String?
-    let isOwner: Bool?
+    let owner: String?
+    
+    init(
+        id: String,
+        name: String? = nil,
+        owner: String? = nil) {
+    
+        self.id = id
+        self.name = name
+        self.owner = owner
+    }
 }
 
-struct FilmList {
-    let id: String
-    let name: String?
-    let owner: User
-    let members: [User]
-    let films: [FilmReference]
+
+class FilmList: FilmListReference {
+    
+    let films: [FilmReference]?
+    
+    init(
+        id: String,
+        name: String? = nil,
+        owner: String? = nil,
+        films: [FilmReference]? = nil) {
+        
+        self.films = films
+        super.init(
+            id: id,
+            name: name,
+            owner: owner
+        )
+    }
 }
 
