@@ -15,7 +15,6 @@
 		6411AF0D2159BD7800460B1F /* Credit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6411AF0C2159BD7800460B1F /* Credit.swift */; };
 		6411AF102159C49E00460B1F /* Backend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6411AF0F2159C49E00460B1F /* Backend.swift */; };
 		6411AF122159C55100460B1F /* FirebaseBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6411AF112159C55100460B1F /* FirebaseBackend.swift */; };
-		6411AF142159C56900460B1F /* StubBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6411AF132159C56900460B1F /* StubBackend.swift */; };
 		6411AF172159C57B00460B1F /* ServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6411AF162159C57B00460B1F /* ServiceProvider.swift */; };
 		6411AF192159C78900460B1F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6411AF182159C78900460B1F /* GoogleService-Info.plist */; };
 		6411AF1B2159E62300460B1F /* FilmList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6411AF1A2159E62300460B1F /* FilmList.swift */; };
@@ -29,6 +28,7 @@
 		64225695215C6CC200CB1822 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64225694215C6CC200CB1822 /* SplashViewController.swift */; };
 		64225697215C701400CB1822 /* PromiseToastExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64225696215C701400CB1822 /* PromiseToastExtensions.swift */; };
 		64225699215C77EA00CB1822 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64225698215C77EA00CB1822 /* UIViewControllerExtensions.swift */; };
+		6422569E215C9D0E00CB1822 /* ListListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6422569D215C9D0E00CB1822 /* ListListViewController.swift */; };
 		643894D7215654E2003563E0 /* ImdbPageScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643894D6215654E2003563E0 /* ImdbPageScraper.swift */; };
 		643894D921565510003563E0 /* ImdbFilmScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643894D821565510003563E0 /* ImdbFilmScraper.swift */; };
 		643894DB21576C3E003563E0 /* FilmDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643894DA21576C3E003563E0 /* FilmDetailsViewController.swift */; };
@@ -70,7 +70,6 @@
 		6411AF0C2159BD7800460B1F /* Credit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credit.swift; sourceTree = "<group>"; };
 		6411AF0F2159C49E00460B1F /* Backend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backend.swift; sourceTree = "<group>"; };
 		6411AF112159C55100460B1F /* FirebaseBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseBackend.swift; sourceTree = "<group>"; };
-		6411AF132159C56900460B1F /* StubBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubBackend.swift; sourceTree = "<group>"; };
 		6411AF162159C57B00460B1F /* ServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceProvider.swift; sourceTree = "<group>"; };
 		6411AF182159C78900460B1F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6411AF1A2159E62300460B1F /* FilmList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmList.swift; sourceTree = "<group>"; };
@@ -84,6 +83,7 @@
 		64225694215C6CC200CB1822 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		64225696215C701400CB1822 /* PromiseToastExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromiseToastExtensions.swift; sourceTree = "<group>"; };
 		64225698215C77EA00CB1822 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
+		6422569D215C9D0E00CB1822 /* ListListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListListViewController.swift; sourceTree = "<group>"; };
 		643894D6215654E2003563E0 /* ImdbPageScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImdbPageScraper.swift; sourceTree = "<group>"; };
 		643894D821565510003563E0 /* ImdbFilmScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImdbFilmScraper.swift; sourceTree = "<group>"; };
 		643894DA21576C3E003563E0 /* FilmDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmDetailsViewController.swift; sourceTree = "<group>"; };
@@ -156,19 +156,11 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		6411AF0E2159C49400460B1F /* Backend */ = {
-			isa = PBXGroup;
-			children = (
-				6411AF0F2159C49E00460B1F /* Backend.swift */,
-				6411AF112159C55100460B1F /* FirebaseBackend.swift */,
-				6411AF132159C56900460B1F /* StubBackend.swift */,
-			);
-			path = Backend;
-			sourceTree = "<group>";
-		};
 		6411AF152159C57100460B1F /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				642256A1215C9E7000CB1822 /* Backend */,
+				6422569F215C9E4200CB1822 /* FilmDataService */,
 				6411AF162159C57B00460B1F /* ServiceProvider.swift */,
 			);
 			path = Services;
@@ -178,11 +170,6 @@
 			isa = PBXGroup;
 			children = (
 				6411AF1C2159E6AD00460B1F /* User.swift */,
-				641A96ED2158AE6300F65BC0 /* Film.swift */,
-				641A96EF2158AECC00F65BC0 /* Person.swift */,
-				6411AF0C2159BD7800460B1F /* Credit.swift */,
-				6411AF082159B97100460B1F /* MediaSearchResult.swift */,
-				6411AF1A2159E62300460B1F /* FilmList.swift */,
 			);
 			path = "Data Model";
 			sourceTree = "<group>";
@@ -215,6 +202,7 @@
 				643894DA21576C3E003563E0 /* FilmDetailsViewController.swift */,
 				64C2FF012144B4D100D4D7A0 /* ViewController.swift */,
 				64C2FF2F2144B7E900D4D7A0 /* ListViewController.swift */,
+				6422569D215C9D0E00CB1822 /* ListListViewController.swift */,
 				643894DC215773AC003563E0 /* FilmSearchViewController.swift */,
 				64225692215C6AD800CB1822 /* LoginViewController.swift */,
 				64225694215C6CC200CB1822 /* SplashViewController.swift */,
@@ -227,6 +215,52 @@
 			children = (
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		6422569F215C9E4200CB1822 /* FilmDataService */ = {
+			isa = PBXGroup;
+			children = (
+				641A96F42158BFBF00F65BC0 /* Imdb */,
+				642256A0215C9E5300CB1822 /* FilmDataModel */,
+			);
+			path = FilmDataService;
+			sourceTree = "<group>";
+		};
+		642256A0215C9E5300CB1822 /* FilmDataModel */ = {
+			isa = PBXGroup;
+			children = (
+				641A96ED2158AE6300F65BC0 /* Film.swift */,
+				641A96EF2158AECC00F65BC0 /* Person.swift */,
+				6411AF0C2159BD7800460B1F /* Credit.swift */,
+				6411AF082159B97100460B1F /* MediaSearchResult.swift */,
+			);
+			path = FilmDataModel;
+			sourceTree = "<group>";
+		};
+		642256A1215C9E7000CB1822 /* Backend */ = {
+			isa = PBXGroup;
+			children = (
+				6411AF0F2159C49E00460B1F /* Backend.swift */,
+				642256A3215C9EA300CB1822 /* DataModel */,
+				642256A2215C9E7E00CB1822 /* Firebase */,
+			);
+			path = Backend;
+			sourceTree = "<group>";
+		};
+		642256A2215C9E7E00CB1822 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				6411AF112159C55100460B1F /* FirebaseBackend.swift */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
+		642256A3215C9EA300CB1822 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				6411AF1A2159E62300460B1F /* FilmList.swift */,
+			);
+			path = DataModel;
 			sourceTree = "<group>";
 		};
 		643894D5215654D0003563E0 /* Scrapers */ = {
@@ -267,8 +301,6 @@
 				64225691215C6AA600CB1822 /* ViewControllers */,
 				6411AF182159C78900460B1F /* GoogleService-Info.plist */,
 				6411AF152159C57100460B1F /* Services */,
-				6411AF0E2159C49400460B1F /* Backend */,
-				641A96F42158BFBF00F65BC0 /* Imdb */,
 				641A96F12158AEE100F65BC0 /* Utility */,
 				641A96EC2158AE5400F65BC0 /* Data Model */,
 				64C2FEFF2144B4D100D4D7A0 /* AppDelegate.swift */,
@@ -546,8 +578,8 @@
 				6411AF092159B97100460B1F /* MediaSearchResult.swift in Sources */,
 				6411AF072159B60800460B1F /* Initialisers.swift in Sources */,
 				6411AF1B2159E62300460B1F /* FilmList.swift in Sources */,
+				6422569E215C9D0E00CB1822 /* ListListViewController.swift in Sources */,
 				641A96EE2158AE6300F65BC0 /* Film.swift in Sources */,
-				6411AF142159C56900460B1F /* StubBackend.swift in Sources */,
 				64225697215C701400CB1822 /* PromiseToastExtensions.swift in Sources */,
 				64225693215C6AD800CB1822 /* LoginViewController.swift in Sources */,
 				64C2FF302144B7E900D4D7A0 /* ListViewController.swift in Sources */,

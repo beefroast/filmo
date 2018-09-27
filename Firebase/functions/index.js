@@ -66,6 +66,21 @@ exports.removeUserFromListTheyDelete = functions.database.ref('/filmLists/{listI
         return admin.database().ref('members/'+uid+'/'+listId).remove();
     });
 
-
+exports.onRenameList = functions.database.ref('/filmLists/{listId}')
+    .onUpdate((change, context) => {
+    
+        const before = change.before;  // DataSnapshot before the change
+        const after = change.after;  // DataSnapshot after the change
+    
+        const uid = after.child('owner').val();
+        const listId = context.params.listId;
+        const name = after.child('name').val();
+    
+        console.log('uid = ' + uid);
+        console.log('listId = ' + listId);
+        console.log('name = ' + name);
+    
+        return admin.database().ref('members/'+uid+'/'+listId+"/name").set(name);
+    });
 
 
