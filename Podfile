@@ -14,6 +14,8 @@ target 'Filmo' do
 	pod "PromiseKit"
 	pod "Fuzi"
 	pod "Alamofire"
+	pod 'Toast-Swift', '~> 3.0.0'
+
 
   target 'FilmoTests' do
     inherit! :search_paths

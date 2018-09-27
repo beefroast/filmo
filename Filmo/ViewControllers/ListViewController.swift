@@ -52,58 +52,59 @@ extension UIImage {
     }
 }
 
-class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FilmSearchViewControllerDelegate, FilmDetailsViewControllerDelegate {
 
     @IBOutlet weak var tableView: UITableView?
+    @IBOutlet weak var getStartedView: UIView?
 
     lazy var imdb = ServiceProvider().imdb
     
     
-    
-    
-    var filmList: [FilmReference]? = nil {
+    var filmListPromise: Promise<FilmList>? = nil {
         didSet {
+            guard let prom = filmListPromise else {
+                return
+            }
+            
+            prom.reportProgress().done { [weak self] (list) in
+                guard prom === self?.filmListPromise else { return }
+                self?.title = list.name ?? self?.title
+                self?.filmList = list.films
+            }
+        }
+    }
+    
+    fileprivate var filmList: [FilmReference]? = nil {
+        didSet {
+            
+            self.udpateGetStartedView()
+            
             guard let films = self.filmList else { return }
+            
             self.filmData = films.map({ (films) -> FilmTableViewCellData in
                 self.cellDataForFilm(withId: films.id)
             })
         }
     }
     
-    var filmData: [FilmTableViewCellData]? = nil {
+    fileprivate var filmData: [FilmTableViewCellData]? = nil {
         didSet {
             self.tableView?.reloadData()
         }
     }
     
-    
+    func udpateGetStartedView() {
+        guard let films = self.filmList else {
+            self.getStartedView?.isHidden = true
+            return
+        }
+        self.getStartedView?.isHidden = films.count > 0
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.tableView?.separatorColor = UIColor.clear
-        
-        let backend = ServiceProvider().backend
-        
-        backend.getFilmLists().map { (filmLists) -> FilmList in
-            guard let list = filmLists.first else { throw BackendError.notImplemented }
-            return list
-            
-        }.done { (list) in
-            self.filmList = list.films
-            self.title = list.name ?? self.title
-
-            let reference = FilmReference(id: "tt0811080", name: "Speed Racer")
-            
-            backend.remove(film: reference, fromList: FilmListReference(id: list.id, name: nil, isOwner: nil)).done({ (_) in
-                print("Success")
-            }).catch({ (error) in
-                print("Error")
-            })
-            
-        }.catch { (error) in
-            print(error)
-        }
+        self.tableView?.separatorStyle = UITableViewCellSeparatorStyle.none
+        self.udpateGetStartedView()
     }
     
 
@@ -190,18 +191,48 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         guard let vc = FilmDetailsViewController.filmDetailsViewController() else { return }
         guard let filmData = self.filmList?[indexPath.row] else { return }
         self.navigationController?.pushViewController(vc, animated: true)
+        vc.title = filmData.name ?? vc.title
         vc.filmPromise = imdb.getFilmWith(id: filmData.id)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func onAddFilmPressed() -> Void {
+        self.performSegue(withIdentifier: "search", sender: self)
     }
-    */
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let vc = segue.destination as? FilmSearchViewController {
+            vc.delegate = self
+        }
+    }
+    
 
+    func addButtonPressed(sender: FilmDetailsViewController?, button: UIButton?) {
+        
+        guard let vc = sender else { return }
+        guard let film = vc.filmPromise?.value else { return }
+        guard let list = self.filmListPromise?.value else { return }
+        
+        let backend = ServiceProvider().backend
+        let filmRef = FilmReference(id: film.id, name: film.name)
+        
+        let addFilm = backend.add(film: filmRef, toList: FilmListReference(id: list.id, name: list.name, isOwner: nil))
+        
+        addFilm.reportProgress().done { [weak self] () in
+            guard let this = self else { return }
+            this.navigationController?.popToViewController(this, animated: true)
+            this.filmList = this.filmList.map({ $0 + [filmRef] })
+        }
+    }
+    
+    func filmSelected(sender: FilmSearchViewController?, searchResult result: MediaSearchResult) {
+        
+        guard let vc = sender?.storyboard?.instantiateViewController(withIdentifier: "FilmDetails") as? FilmDetailsViewController else { return }
+        
+        vc.filmPromise = imdb.getFilmWith(id: result.id)
+        vc.title = result.title
+        vc.delegate = self
+        
+        sender?.navigationController?.pushViewController(vc, animated: true)
+    }
+ 
 }

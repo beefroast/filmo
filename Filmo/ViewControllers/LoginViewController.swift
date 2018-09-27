@@ -16,32 +16,42 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     lazy var backend = ServiceProvider.init().backend
     
-    override func viewDidLoad() {
-        super.viewDidLoad()   
-    }
+
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.txtEmail?.becomeFirstResponder()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        guard let listRef = sender as? FilmListReference else { return }
+        guard let vc = (segue.destination as? UITabBarController)?.viewControllers?.first?.rootViewController() as? ListViewController else { return }
+        vc.filmListPromise = self.backend.getFilmList(id: listRef.id)
     }
     
     func attemptLogin() {
         
         guard let user = self.txtEmail?.text, let pass = self.txtPassword?.text else { return }
         
-        self.backend.login(user: user, password: pass).recover { (error) -> Promise<Void> in
+        
+        
+        let backend = self.backend
+        
+        backend.login(user: user, password: pass).recover { (error) -> Promise<Void> in
+            
             // TODO: Maybe not auto register...
-            return self.backend.register(user: user, password: pass)
-        }.done { (_) in
-            self.performSegue(withIdentifier: "mainScreen", sender: self)
-        }.catch { (error) in
-            // TODO: Handle this error!
-        }
+            return backend.register(user: user, password: pass)
+        
+        }.then({ () -> Promise<Array<FilmListReference>> in
+            return backend.getFilmListReferences()
+            
+        }).reportProgress().done({ (filmLists) in
+            let list = filmLists.first
+            self.performSegue(withIdentifier: "mainScreen", sender: list)
+            
+        }).lockView(view: self.view).cauterize()
     }
 
     

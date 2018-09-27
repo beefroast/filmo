@@ -11,9 +11,12 @@ import UIKit
 class SplashViewController: UIViewController {
 
     override func viewDidLoad() {
-        super.viewDidLoad()        
-        ServiceProvider().backend.isUserLoggedIn().done { (loggedIn) in
-            self.performSegue(withIdentifier: loggedIn ? "skipLogin" : "login", sender: self)
+        super.viewDidLoad()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            ServiceProvider().backend.logout()
+            ServiceProvider().backend.isUserLoggedIn().done { (loggedIn) in
+                self.performSegue(withIdentifier: loggedIn ? "skipLogin" : "login", sender: self)
+            }
         }
     }
 }

@@ -37,12 +37,22 @@ protocol Backend {
 }
 
 extension Backend {
+    
     func getFilmLists() -> Promise<Array<FilmList>> {
         return self.getFilmListReferences().then({ (listRefs) -> Promise<Array<FilmList>> in
             let promises = listRefs.map({ (liftRef) -> Promise<FilmList> in
                 return self.getFilmList(id: liftRef.id)
             })
             return when(fulfilled: promises)
+        })
+    }
+    
+    func getInitialFilmList() -> Promise<FilmList?> {
+        return self.getFilmListReferences().then({ (references) -> Promise<FilmList?> in
+            guard let ref = references.first else { return Promise<FilmList?>.value(nil) }
+            return self.getFilmList(id: ref.id).map({ (list) -> FilmList? in
+                return list
+            })
         })
     }
 }

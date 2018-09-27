@@ -53,10 +53,20 @@ class PromiseDebouncer {
     
 }
 
-class FilmSearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
+
+protocol FilmSearchViewControllerDelegate {
+    func filmSelected(sender: FilmSearchViewController?, searchResult: MediaSearchResult)
+}
+
+class FilmSearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, FilmSearchViewControllerDelegate {
+    
+
+    
 
     lazy var imdb = ServiceProvider().imdb
     lazy var promiseDebouncer = PromiseDebouncer(timeInterval: 1.0)
+    var delegate: FilmSearchViewControllerDelegate? = nil
+    
     
     @IBOutlet weak var tableView: UITableView?
     @IBOutlet weak var searchBar: UISearchBar?
@@ -115,14 +125,25 @@ class FilmSearchViewController: UIViewController, UISearchBarDelegate, UITableVi
         tableView.deselectRow(at: indexPath, animated: true)
         
         guard let result = self.searchResults?[indexPath.row] else { return }
-        guard let vc = self.storyboard?.instantiateViewController(withIdentifier: "FilmDetails") as? FilmDetailsViewController else { return }
+        
+        self.delegate?.filmSelected(sender: self, searchResult: result)
+        
+        
+    }
+    
+    
+    func filmSelected(sender: FilmSearchViewController?, searchResult result: MediaSearchResult) {
+        
+        guard let vc = sender?.storyboard?.instantiateViewController(withIdentifier: "FilmDetails") as? FilmDetailsViewController else { return }
         
         vc.filmPromise = imdb.getFilmWith(id: result.id)
         vc.title = result.title
         
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        sender?.navigationController?.pushViewController(vc, animated: true)
     }
+    
+    
+    
     
     var currentPromise: Promise<Array<MediaSearchResult>>? = nil
     

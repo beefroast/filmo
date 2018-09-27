@@ -30,6 +30,12 @@ class FilmDetailsViewController: UIViewController {
     @IBOutlet weak var lblRuntime: UILabel?
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView?
     
+    var delegate: FilmDetailsViewControllerDelegate? = nil {
+        didSet {
+            // Enable the button
+        }
+    }
+    
     lazy var imdb = ServiceProvider().imdb
     
     var optionalFields: [UILabel?] {
@@ -127,6 +133,10 @@ class FilmDetailsViewController: UIViewController {
     func setOrHide(label: UILabel?, value: String?) {
         label?.text = value
         label?.superview?.isHidden = (value == nil)
+    }
+    
+    @IBAction func onAddButtonPressed(sender: Any?) {
+        self.delegate?.addButtonPressed(sender: self, button: sender as? UIButton)
     }
     
     static func filmDetailsViewController(storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)) -> FilmDetailsViewController? {
