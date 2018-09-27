@@ -19,7 +19,13 @@ class MainTabBarViewController: UITabBarController {
         
         // Setup the main page...
         
-        let pages = [getMainPage()].compactMap({ $0 })
+        let pages = [
+            getMainPage(),
+            getSearchPage(),
+            getFriendsPage(),
+            getSettingsPage()
+            ].compactMap({ $0 })
+        
         self.setViewControllers(pages, animated: false)
     }
     
@@ -42,6 +48,27 @@ class MainTabBarViewController: UITabBarController {
         
         return nav
     }
+    
+    func getSearchPage() -> UIViewController? {
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "search")
+        vc?.title = "Search"
+        return vc
+    }
+    
+    func getFriendsPage() -> UIViewController? {
+        let vc = UIViewController()
+        vc.title = "Friends"
+        return vc
+    }
+    
+    func getSettingsPage() -> UIViewController? {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "settings")
+        vc?.title = "Settings"
+        return vc
+    }
+    
+    
 
 
 
