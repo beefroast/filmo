@@ -32,6 +32,7 @@ protocol Backend {
     func getFilmListReferences() -> Promise<Array<FilmListReference>>
     func getFilmList(id: String) -> Promise<FilmList>
     
+    func rename(list: FilmListReference, name: String) -> Promise<Void>
     func add(film: FilmReference, toList: FilmListReference) -> Promise<Void>
     func remove(film: FilmReference, fromList: FilmListReference) -> Promise<Void>
 }
@@ -102,6 +103,10 @@ class StubBackend: Backend {
     }
     
     func getFilmList(id: String) -> Promise<FilmList> {
+        return BackendError.notImplemented.toPromise()
+    }
+    
+    func rename(list: FilmListReference, name: String) -> Promise<Void> {
         return BackendError.notImplemented.toPromise()
     }
     

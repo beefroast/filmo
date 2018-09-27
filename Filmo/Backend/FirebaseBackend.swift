@@ -239,6 +239,9 @@ class FirebaseBackend: Backend {
         })
     }
     
+    func rename(list: FilmListReference, name: String) -> Promise<Void> {
+        return database.child("filmLists/\(list.id)/name").setValuePromise(value: name)
+    }
     
     
     func add(film: FilmReference, toList list: FilmListReference) -> Promise<Void> {
