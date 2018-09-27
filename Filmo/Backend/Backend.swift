@@ -19,6 +19,7 @@ protocol Backend {
     
     func login(user: String, password: String) -> Promise<Void>
     func register(user: String, password: String) -> Promise<Void>
+    func deregister() -> Promise<Void>
     
     func getSavedFilms() -> Promise<Array<String>>
     func save(film: String) -> Promise<Array<String>>
@@ -51,6 +52,10 @@ class StubBackend: Backend {
     
     func register(user: String, password: String) -> Promise<Void> {
         return Promise()
+    }
+    
+    func deregister() -> Promise<Void> {
+        return BackendError.notImplemented.toPromise()
     }
     
     var savedFilms: [String] = ["tt6998518"]

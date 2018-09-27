@@ -82,12 +82,42 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let backend = ServiceProvider().backend
         
-        backend.login(user: "benjamin.frost.dev@gmail.com", password: "testpassword").then { () -> Promise<Array<FilmList>> in
+        backend.login(user: "benjamin.frost.dev@gmail.com", password: "testpassword").then { (_) -> Promise<Void> in
+            backend.deregister()
+            
+        }.recover { (err) in
+            
+            guard let error = err as? BackendError else { throw err }
+            
+            switch error {
+            case .notImplemented: return
+            default: throw err
+            }
+            
+        }.then { (_) -> Promise<Void> in
+            backend.register(user: "benjamin.frost.dev@gmail.com", password: "testpassword")
+            
+        }.then { () -> Promise<Array<FilmList>> in
             return backend.getFilmLists()
-        }.done { (films) in
-            print(films)
+            
+        }.map { (filmLists) -> FilmList in
+            guard let list = filmLists.first else { throw BackendError.notImplemented }
+            return list
+            
+        }.done { (list) in
+            self.filmList = list.films
+            self.title = list.name ?? self.title
+
+            let reference = FilmReference(id: "tt0811080", name: "Speed Racer")
+            
+            backend.remove(film: reference, fromList: FilmListReference(id: list.id, name: nil, isOwner: nil)).done({ (_) in
+                print("Success")
+            }).catch({ (error) in
+                print("Error")
+            })
+            
         }.catch { (error) in
-            print("Error")
+            print(error)
         }
 
     }
