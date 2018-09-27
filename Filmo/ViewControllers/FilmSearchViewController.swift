@@ -54,9 +54,13 @@ class PromiseDebouncer {
 }
 
 
+
+
+
 protocol FilmSearchViewControllerDelegate {
     func filmSelected(sender: FilmSearchViewController?, searchResult: MediaSearchResult)
 }
+
 
 class FilmSearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, FilmSearchViewControllerDelegate {
     

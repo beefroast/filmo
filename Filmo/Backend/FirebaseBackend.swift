@@ -248,7 +248,7 @@ class FirebaseBackend: Backend {
     }
     
     func remove(film: FilmReference, fromList list: FilmListReference) -> Promise<Void> {
-        return database.child("filmLists/\(list.id)/films/\(film.id))").removeValuePromise()
+        return database.child("filmLists/\(list.id)/films/\(film.id)").removeValuePromise()
     }
     
     

@@ -52,7 +52,7 @@ extension UIImage {
     }
 }
 
-class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FilmSearchViewControllerDelegate, FilmDetailsViewControllerDelegate {
+class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView?
     @IBOutlet weak var getStartedView: UIView?
@@ -193,46 +193,94 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.navigationController?.pushViewController(vc, animated: true)
         vc.title = filmData.name ?? vc.title
         vc.filmPromise = imdb.getFilmWith(id: filmData.id)
+        
+        vc.delegate = ViewFilmDetailsViewControllerDelegate(onDeleteFilm: { [weak self] (film) in
+            
+            guard let list = self?.filmListPromise?.value else { return }
+            let listRef = FilmListReference(id: list.id, name: nil, isOwner: nil)
+            let backend = ServiceProvider().backend
+            
+            backend.remove(film: film, fromList: listRef).reportProgress().done({ [weak self] () in
+                guard let this = self else { return }
+                this.navigationController?.popToViewController(this, animated: true)
+            }).cauterize()
+        })
     }
     
     @IBAction func onAddFilmPressed() -> Void {
-        self.performSegue(withIdentifier: "search", sender: self)
+        
+        let delegate = AddFilmToListSearchViewControllerDelegate { [weak self] (film) in
+            
+            guard let list = self?.filmListPromise?.value else { return }
+            
+            let backend = ServiceProvider().backend
+            let addFilm = backend.add(film: film, toList: FilmListReference(id: list.id, name: list.name, isOwner: nil))
+            
+            addFilm.reportProgress().done { [weak self] () in
+                guard let this = self else { return }
+                this.navigationController?.popToViewController(this, animated: true)
+                this.filmList = this.filmList.map({ $0 + [film] })
+            }.cauterize()
+        }
+        
+        self.performSegue(withIdentifier: "search", sender: delegate)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let vc = segue.destination as? FilmSearchViewController {
-            vc.delegate = self
+            vc.delegate = sender as? FilmSearchViewControllerDelegate
         }
     }
     
+}
 
+
+class ViewFilmDetailsViewControllerDelegate: FilmDetailsViewControllerDelegate {
+    
+    let onDeleteFilm: ((FilmReference) -> Void)
+    
+    init(onDeleteFilm: @escaping ((FilmReference) -> Void)) {
+        self.onDeleteFilm = onDeleteFilm
+    }
+    
     func addButtonPressed(sender: FilmDetailsViewController?, button: UIButton?) {
-        
-        guard let vc = sender else { return }
-        guard let film = vc.filmPromise?.value else { return }
-        guard let list = self.filmListPromise?.value else { return }
-        
-        let backend = ServiceProvider().backend
+        guard let film = sender?.filmPromise?.value else { return }
         let filmRef = FilmReference(id: film.id, name: film.name)
-        
-        let addFilm = backend.add(film: filmRef, toList: FilmListReference(id: list.id, name: list.name, isOwner: nil))
-        
-        addFilm.reportProgress().done { [weak self] () in
-            guard let this = self else { return }
-            this.navigationController?.popToViewController(this, animated: true)
-            this.filmList = this.filmList.map({ $0 + [filmRef] })
-        }
+        self.onDeleteFilm(filmRef)
+    }
+}
+
+class AddFilmToListSearchViewControllerDelegate: FilmSearchViewControllerDelegate, FilmDetailsViewControllerDelegate {
+    
+    let onAddFilm: ((FilmReference) -> Void)
+    
+    init(onAddFilm: @escaping ((FilmReference) -> Void)) {
+        self.onAddFilm = onAddFilm
     }
     
     func filmSelected(sender: FilmSearchViewController?, searchResult result: MediaSearchResult) {
-        
         guard let vc = sender?.storyboard?.instantiateViewController(withIdentifier: "FilmDetails") as? FilmDetailsViewController else { return }
         
-        vc.filmPromise = imdb.getFilmWith(id: result.id)
+        vc.filmPromise = ServiceProvider().imdb.getFilmWith(id: result.id)
         vc.title = result.title
         vc.delegate = self
         
         sender?.navigationController?.pushViewController(vc, animated: true)
     }
- 
+    
+    func addButtonPressed(sender: FilmDetailsViewController?, button: UIButton?) {
+        guard let film = sender?.filmPromise?.value else { return }
+        let filmRef = FilmReference(id: film.id, name: film.name)
+        self.onAddFilm(filmRef)
+    }
 }
+
+
+
+
+
+
+
+
+
+
