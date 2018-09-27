@@ -31,6 +31,7 @@
 		6422569E215C9D0E00CB1822 /* ListListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6422569D215C9D0E00CB1822 /* ListListViewController.swift */; };
 		642256A5215C9EEE00CB1822 /* FirebaseFilmListSerialisation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642256A4215C9EEE00CB1822 /* FirebaseFilmListSerialisation.swift */; };
 		642256A7215C9F1400CB1822 /* BackendModelSerialiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642256A6215C9F1400CB1822 /* BackendModelSerialiser.swift */; };
+		642256AA215CA4CA00CB1822 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642256A9215CA4CA00CB1822 /* MainTabBarViewController.swift */; };
 		643894D7215654E2003563E0 /* ImdbPageScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643894D6215654E2003563E0 /* ImdbPageScraper.swift */; };
 		643894D921565510003563E0 /* ImdbFilmScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643894D821565510003563E0 /* ImdbFilmScraper.swift */; };
 		643894DB21576C3E003563E0 /* FilmDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643894DA21576C3E003563E0 /* FilmDetailsViewController.swift */; };
@@ -88,6 +89,7 @@
 		6422569D215C9D0E00CB1822 /* ListListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListListViewController.swift; sourceTree = "<group>"; };
 		642256A4215C9EEE00CB1822 /* FirebaseFilmListSerialisation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFilmListSerialisation.swift; sourceTree = "<group>"; };
 		642256A6215C9F1400CB1822 /* BackendModelSerialiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendModelSerialiser.swift; sourceTree = "<group>"; };
+		642256A9215CA4CA00CB1822 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		643894D6215654E2003563E0 /* ImdbPageScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImdbPageScraper.swift; sourceTree = "<group>"; };
 		643894D821565510003563E0 /* ImdbFilmScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImdbFilmScraper.swift; sourceTree = "<group>"; };
 		643894DA21576C3E003563E0 /* FilmDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmDetailsViewController.swift; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 			children = (
 				6422569A215C79B900CB1822 /* Views */,
 				64C2FF032144B4D100D4D7A0 /* Main.storyboard */,
+				642256A9215CA4CA00CB1822 /* MainTabBarViewController.swift */,
 				643894DA21576C3E003563E0 /* FilmDetailsViewController.swift */,
 				64C2FF012144B4D100D4D7A0 /* ViewController.swift */,
 				64C2FF2F2144B7E900D4D7A0 /* ListViewController.swift */,
@@ -603,6 +606,7 @@
 				6411AF102159C49E00460B1F /* Backend.swift in Sources */,
 				6411AF172159C57B00460B1F /* ServiceProvider.swift in Sources */,
 				643894DB21576C3E003563E0 /* FilmDetailsViewController.swift in Sources */,
+				642256AA215CA4CA00CB1822 /* MainTabBarViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
