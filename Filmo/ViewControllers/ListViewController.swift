@@ -197,11 +197,13 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         vc.delegate = ViewFilmDetailsViewControllerDelegate(onDeleteFilm: { [weak self] (film) in
             
             guard let list = self?.filmListPromise?.value else { return }
-            let listRef = FilmListReference(id: list.id, name: nil, owner: nil)
-            let backend = ServiceProvider().backend
             
-            backend.remove(film: film, fromList: listRef).reportProgress().done({ [weak self] () in
+            let backend = ServiceProvider().backend
+            let updatedList = list.byRemoving(film: film)
+            
+            backend.update(filmList: updatedList).reportProgress().done({ [weak self] () in
                 guard let this = self else { return }
+                this.filmListPromise = Promise<FilmList>.value(updatedList)
                 this.navigationController?.popToViewController(this, animated: true)
             }).cauterize()
         })
@@ -214,13 +216,13 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             guard let list = self?.filmListPromise?.value else { return }
             
             let backend = ServiceProvider().backend
-            let addFilm = backend.add(film: film, toList: FilmListReference(id: list.id, name: list.name, owner: nil))
-            
-            addFilm.reportProgress().done { [weak self] () in
+            let updatedList = list.byAdding(film: film)
+
+            backend.update(filmList: updatedList).reportProgress().done({ [weak self] () in
                 guard let this = self else { return }
+                this.filmListPromise = Promise<FilmList>.value(updatedList)
                 this.navigationController?.popToViewController(this, animated: true)
-                this.filmList = this.filmList.map({ $0 + [film] })
-            }.cauterize()
+            }).cauterize()
         }
         
         self.performSegue(withIdentifier: "search", sender: delegate)

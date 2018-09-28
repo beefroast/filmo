@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PromiseKit
 import Toast_Swift
 
 
@@ -144,11 +145,18 @@ class MainTabBarViewController: UITabBarController, ListListViewControllerDelega
             vc.lists = self?.lists
             vc.title = "Select List"
             vc.delegate = ListListViewControllerClosureDelegate(onListSelected: { (vc, list) in
-                ServiceProvider().backend.add(film: film, toList: list).lockView(view: vc.view).reportProgress().done({ (_) in
+                
+                let backend = ServiceProvider().backend
+                
+                backend.getFilmList(ref: list).then({ (filmList) -> Promise<Void> in
+                    let updatedList = filmList.byAdding(film: film)
+                    return backend.update(filmList: updatedList)
+                
+                }).reportProgress().done({ () in
                     guard let vc = sender else { return }
                     vc.navigationController?.popToViewController(vc, animated: true)
                     try? vc.view.toastViewForMessage("\(film.name ?? "Film") added to \(list.name ?? "list")", title: "Added", image: nil, style: ToastStyle())
-                }).cauterize()
+                })
             })
             
             sender?.navigationController?.pushViewController(vc, animated: true)

@@ -36,6 +36,40 @@ protocol FirebaseInitialiser {
     func initialiseIfNeeded()
 }
 
+
+extension EnumeratedSequence {
+    
+    func toDictionary<TKey: Hashable, TVal>(makeKey: ((Int, Base.Element) -> TKey), makeValue: ((Int, Base.Element) -> TVal)) -> [TKey: TVal] {
+        var dict = [TKey: TVal]()
+        self.forEach { (i, elt) in
+            dict[makeKey(i, elt)] = makeValue(i, elt)
+        }
+        return dict
+    }
+}
+
+extension DataSnapshot {
+    
+    func mapChildren<T>(_ fn: ((DataSnapshot) -> T)) -> [T] {
+        return self.children.compactMap { (x) -> T? in
+            guard let elt = x as? DataSnapshot else {
+                return nil
+            }
+            return fn(elt)
+        }
+    }
+    
+    func compactMapChildren<T>(_ fn: ((DataSnapshot) -> T?)) -> [T] {
+        return self.children.compactMap({ (x) -> T? in
+            guard let elt = x as? DataSnapshot else {
+                return nil
+            }
+            return fn(elt)
+        })
+    }
+}
+
+
 extension DatabaseReference {
     
     func setValuePromise(value: Any?) -> Promise<Void> {
@@ -69,24 +103,12 @@ extension DatabaseReference {
 
 extension DatabaseQuery {
     
+
     
-    
-    func observeSingleEventPromise<T>(of type: DataEventType) -> Promise<T> {
+    func observeSingleEventPromise(of type: DataEventType) -> Promise<DataSnapshot> {
         return Promise { seal in
             self.observeSingleEvent(of: type, with: { (snapshot) in
-                
-                guard snapshot.exists() else {
-                    seal.reject(FirebaseBackendError.noSnapshotExists)
-                    return
-                }
-                
-                guard let x = snapshot.value as? T else {
-                    seal.reject(FirebaseBackendError.invalidPayload(snapshot))
-                    return
-                }
-                
-                seal.fulfill(x)
-                
+                seal.fulfill(snapshot)
             }) { (error) in
                 seal.reject(error)
             }
@@ -112,12 +134,8 @@ class DefaultFirebaseInitialiser: FirebaseInitialiser {
 class FirebaseBackend: Backend {
 
     
-    
-    
-    
+ 
 
-    
-    
     lazy var database = Database.database().reference()
     
     init(initialiser: FirebaseInitialiser) {
@@ -186,50 +204,7 @@ class FirebaseBackend: Backend {
 
 
     
-    func getSavedFilms() -> Promise<Array<String>> {
-        
-        guard let user = Auth.auth().currentUser else {
-            return Promise.init(error: FirebaseBackendError.notAuthenticated)
-        }
-        
-        return database.child("filmList/\(user.uid)").observeSingleEventPromise(of: .value)
-    }
-    
-    func save(film: String) -> Promise<Array<String>> {
-        
-        guard let user = Auth.auth().currentUser else {
-            return Promise.init(error: FirebaseBackendError.notAuthenticated)
-        }
-        
-        return self.getSavedFilms().then { (films) -> Promise<Array<String>> in            
-            let editedFilms = films + [film]
-            
-            return self.database.child("filmList/\(user.uid)").setValuePromise(value: editedFilms).map({ (_) -> [String] in
-                editedFilms
-            })
-        }
-    }
-    
-    func remove(film: String) -> Promise<Array<String>> {
-        
-        guard let user = Auth.auth().currentUser else {
-            return Promise.init(error: FirebaseBackendError.notAuthenticated)
-        }
-        
-        return self.getSavedFilms().then { (films) -> Promise<Array<String>> in
-            
-            guard let i = films.index(of: film) else {
-                return Promise<Array<String>>.value(films)
-            }
-            
-            var editedFilms = films
-            editedFilms.remove(at: i)
 
-            return self.database.child("filmList/\(user.uid)").setValuePromise(value: editedFilms).map({ (_) -> [String] in
-                return editedFilms
-            })
-        }
-    }
     
     
     
@@ -242,17 +217,15 @@ class FirebaseBackend: Backend {
             return Promise.init(error: FirebaseBackendError.notAuthenticated)
         }
         
-        return database.child("members/\(user.uid)").observeSingleEventPromise(of: .value).map { (dictionary: [String: [String: Any]]) -> [FilmListReference] in
-            return dictionary.map({ (id, values) -> FilmListReference in
-                return FilmListReference(
-                    id: id,
-                    name: values["name"] as? String,
-                    owner: values["owner"] as? String
+        return database.child("members/\(user.uid)").observeSingleEventPromise(of: .value).map({ (snapshot) -> [FilmListReference] in
+            
+            return snapshot.mapChildren({ (s) -> FilmListReference in
+                FilmListReference(
+                    id: s.key,
+                    name: s.childSnapshot(forPath: "name").value as? String,
+                    owner: s.childSnapshot(forPath: "owner").value as? String
                 )
             })
-        }.recover({ (error) -> Guarantee<[FilmListReference]> in
-            guard error.isMissingSnapshotError else { throw error }
-            return Guarantee<[FilmListReference]>.value([])
         })
     }
     
@@ -262,20 +235,55 @@ class FirebaseBackend: Backend {
             return Promise.init(error: FirebaseBackendError.notAuthenticated)
         }
         
-        return database.child("filmLists/\(id)").observeSingleEventPromise(of: .value).map({ (dictionary: [String: Any]) -> FilmList in
+        return database.child("filmLists/\(id)").observeSingleEventPromise(of: .value).map({ (snapshot: DataSnapshot) -> FilmList in
             
-            let filmReferences = (dictionary["films"] as? [String: Any])?.map({ (key, value) -> FilmReference in
-                return FilmReference(id: key, name: value as? String)
+            let name = snapshot.childSnapshot(forPath: "name").value as? String
+            let owner = snapshot.childSnapshot(forPath: "owner").value as? String
+            
+            snapshot.childSnapshot(forPath: "films").children.forEach({ (x) in
+                print(x)
             })
             
             return FilmList(
-                id: id,
-                name: dictionary["name"] as? String,
-                owner: dictionary["owner"] as? String,
-                films: filmReferences
+                id: snapshot.key,
+                name: snapshot.childSnapshot(forPath: "name").value as? String,
+                owner: snapshot.childSnapshot(forPath: "owner").value as? String,
+                films: snapshot.childSnapshot(forPath: "films").compactMapChildren({ (snapshot) -> FilmReference? in
+                    guard let id = snapshot.childSnapshot(forPath: "filmId").value as? String else { return nil }
+                    return FilmReference(
+                        id: id,
+                        name: snapshot.childSnapshot(forPath: "name").value as? String
+                    )
+                })
             )
         })
     }
+    
+    func update(filmList: FilmList) -> Promise<Void> {
+        
+        guard Auth.auth().currentUser != nil else {
+            return Promise.init(error: FirebaseBackendError.notAuthenticated)
+        }
+
+        // Convert to a dictionary
+        
+        let dictionary: [String: Any] = [
+            "name": filmList.name,
+            "owner": filmList.owner,
+            "films": filmList.films?.enumerated().toDictionary(makeKey: { (i, _) -> String in
+                return "\(i)"
+            }, makeValue: { (_, ref) -> [String: Any] in
+                return [
+                    "filmId": ref.id,
+                    "name": ref.name
+                ]
+            })
+        ]
+        
+        return database.child("filmLists/\(filmList.id)").setValuePromise(value: dictionary)
+    }
+    
+    
     
     func createListWith(name: String) -> Promise<FilmListReference> {
         
@@ -324,12 +332,25 @@ class FirebaseBackend: Backend {
         guard let user = Auth.auth().currentUser else {
             return Promise.init(error: FirebaseBackendError.notAuthenticated)
         }
-        
-        return database.child("users/\(user.uid)/friends").observeSingleEventPromise(of: .value).map { (dict: [String: String]) -> [FriendReference] in
-            return dict.map({ (id, name) -> FriendReference in
-                FriendReference(id: id, name: name)
+
+        return database.child("users/\(user.uid)/friends").observeSingleEventPromise(of: .value).map { (snapshot) -> [FriendReference] in
+            return snapshot.mapChildren({ (snapshot) -> FriendReference in
+                return FriendReference(
+                    id: snapshot.key,
+                    name: snapshot.value as? String
+                )
             })
         }
+
+        
+        
+        return FirebaseBackendError.notAuthenticated.toPromise()
+        
+//        return database.child("users/\(user.uid)/friends").observeSingleEventPromise(of: .value).map { (dict: [String: String]) -> [FriendReference] in
+//            return dict.map({ (id, name) -> FriendReference in
+//                FriendReference(id: id, name: name)
+//            })
+//        }
 
     }
     

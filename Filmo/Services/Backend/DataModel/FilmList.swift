@@ -44,5 +44,48 @@ class FilmList: FilmListReference {
             owner: owner
         )
     }
+
+    func with(name: String) -> FilmList {
+        return FilmList(
+            id: self.id,
+            name: name,
+            owner: self.owner,
+            films: self.films
+        )
+    }
+    
+    func with(films: [FilmReference]) -> FilmList {
+        return FilmList(
+            id: self.id,
+            name: self.name,
+            owner: self.owner,
+            films: films
+        )
+    }
+    
+    func byAdding(film: FilmReference) -> FilmList {
+        return FilmList(
+            id: self.id,
+            name: self.name,
+            owner: self.owner,
+            films: self.films.map({ [film] + $0 }) ?? [film]
+        )
+    }
+    
+    func byRemoving(film: FilmReference) -> FilmList {
+        return FilmList(
+            id: self.id,
+            name: self.name,
+            owner: self.owner,
+            films: self.films?.filter({ $0.id != film.id })
+        )
+    }
+
+    
 }
+
+
+
+
+
 

@@ -33,20 +33,22 @@ protocol Backend {
     func register(user: String, password: String) -> Promise<Void>
     func deregister() -> Promise<Void>
     
-    func getSavedFilms() -> Promise<Array<String>>
-    func save(film: String) -> Promise<Array<String>>
-    func remove(film: String) -> Promise<Array<String>>
-    
     func getFilmListReferences() -> Promise<Array<FilmListReference>>
-    func getFilmList(id: String) -> Promise<FilmList>
     
+    func getFilmList(id: String) -> Promise<FilmList>
+    func update(filmList: FilmList) -> Promise<Void>
     func createListWith(name: String) -> Promise<FilmListReference>
     func delete(list: FilmListReference) -> Promise<Void>
-    func rename(list: FilmListReference, name: String) -> Promise<Void>
-    func add(film: FilmReference, toList: FilmListReference) -> Promise<Void>
-    func remove(film: FilmReference, fromList: FilmListReference) -> Promise<Void>
     
     func getFriends() -> Promise<Array<FriendReference>>
+}
+
+
+extension Backend {
+    func getFilmList(ref: FilmListReference) -> Promise<FilmList> {
+        if let x = ref as? FilmList { return Promise<FilmList>.value(x) }
+        return self.getFilmList(id: ref.id)
+    }
 }
 
 
