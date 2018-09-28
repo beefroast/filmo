@@ -100,7 +100,7 @@ class ListListViewController: UIViewController, UITableViewDataSource, UITableVi
             let list = sender as? FilmListReference {
         
             vc.title = list.name
-            vc.filmListPromise = ServiceProvider().backend.getFilmList(id: list.id)
+            vc.listReference = list
         }
     }
     

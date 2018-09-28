@@ -54,43 +54,31 @@ extension UIImage {
 
 class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FilmListUpdateListenerDelegate {
 
-    
-
     @IBOutlet weak var tableView: UITableView?
     @IBOutlet weak var getStartedView: UIView?
 
     lazy var imdb = ServiceProvider().imdb
     
-    var udpateListener: Any? = nil
+    var updateListener: Any? = nil
     
-    var filmListPromise: Promise<FilmList>? = nil {
+    var listReference: FilmListReference? = nil {
         didSet {
-            guard let prom = filmListPromise else {
-                return
-            }
-            
-            prom.reportProgress().done { [weak self] (list) in
-                
-                guard let this = self else { return }
-                guard prom === this.filmListPromise else { return }
-                this.title = list.name ?? self?.title
-                this.filmList = list.films
-                
-                self?.udpateListener = ServiceProvider().backend.registerFilmList(listener: this, forList: list)
-                
-            }.cauterize()
+            self.updateListener = listReference.map({
+                ServiceProvider().backend.registerFilmList(listener: self, forList: $0)
+            })
         }
     }
     
-    fileprivate var filmList: [FilmReference]? = nil {
+    var filmList: FilmList? = nil {
         didSet {
-            
+            self.filmReferences = self.filmList?.films
+        }
+    }
+    
+    fileprivate var filmReferences: [FilmReference]? = nil {
+        didSet {
             self.udpateGetStartedView()
-            
-            guard let films = self.filmList else { return }
-            
-            
-            
+            guard let films = self.filmReferences else { return }
             self.filmData = films.map({ (films) -> FilmTableViewCellData in
                 self.cellDataForFilm(withId: films.id)
             })
@@ -104,7 +92,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func udpateGetStartedView() {
-        guard let films = self.filmList else {
+        guard let films = self.filmReferences else {
             self.getStartedView?.isHidden = true
             return
         }
@@ -118,7 +106,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func onFilmListUpdated(filmList: FilmList) {
-        print("Yay!")
+        self.filmList = filmList
     }
 
     func cellDataForFilm(withId: String) -> FilmTableViewCellData {
@@ -202,21 +190,20 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let vc = FilmDetailsViewController.filmDetailsViewController() else { return }
-        guard let filmData = self.filmList?[indexPath.row] else { return }
+        guard let filmData = self.filmList?.films?[indexPath.row] else { return }
         self.navigationController?.pushViewController(vc, animated: true)
         vc.title = filmData.name ?? vc.title
         vc.filmPromise = imdb.getFilmWith(id: filmData.id)
         
         vc.delegate = ViewFilmDetailsViewControllerDelegate(onDeleteFilm: { [weak self] (film) in
             
-            guard let list = self?.filmListPromise?.value else { return }
+            guard let list = self?.filmList else { return }
             
             let backend = ServiceProvider().backend
             let updatedList = list.byRemoving(film: film)
             
             backend.update(filmList: updatedList).reportProgress().done({ [weak self] () in
                 guard let this = self else { return }
-                this.filmListPromise = Promise<FilmList>.value(updatedList)
                 this.navigationController?.popToViewController(this, animated: true)
             }).cauterize()
         })
@@ -226,14 +213,13 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let delegate = AddFilmToListSearchViewControllerDelegate { [weak self] (film) in
             
-            guard let list = self?.filmListPromise?.value else { return }
+            guard let list = self?.filmList else { return }
             
             let backend = ServiceProvider().backend
             let updatedList = list.byAdding(film: film)
 
             backend.update(filmList: updatedList).reportProgress().done({ [weak self] () in
                 guard let this = self else { return }
-                this.filmListPromise = Promise<FilmList>.value(updatedList)
                 this.navigationController?.popToViewController(this, animated: true)
             }).cauterize()
         }

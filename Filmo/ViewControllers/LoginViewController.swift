@@ -28,7 +28,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         super.prepare(for: segue, sender: sender)
         guard let listRef = sender as? FilmListReference else { return }
         guard let vc = (segue.destination as? UITabBarController)?.viewControllers?.first?.rootViewController() as? ListViewController else { return }
-        vc.filmListPromise = self.backend.getFilmList(id: listRef.id)
+        vc.listReference = listRef
     }
     
     func attemptLogin() {

@@ -56,7 +56,7 @@ class MainTabBarViewController: UITabBarController, ListListViewControllerDelega
             return nav
         }
         
-        listVc.filmListPromise = ServiceProvider().backend.getFilmList(id: list.id)
+        listVc.listReference = list
         nav.pushViewController(listVc, animated: false)
         
         return nav

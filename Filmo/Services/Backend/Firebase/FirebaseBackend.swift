@@ -350,8 +350,6 @@ class FirebaseBackend: Backend {
             })
         }
     }
-    
-    
 }
 
 
