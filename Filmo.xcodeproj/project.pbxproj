@@ -61,6 +61,7 @@
 		64C2FF2E2144B59E00D4D7A0 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C2FF2D2144B59E00D4D7A0 /* GradientView.swift */; };
 		64C2FF302144B7E900D4D7A0 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C2FF2F2144B7E900D4D7A0 /* ListViewController.swift */; };
 		64DD74FA215DCC5D009AC8DA /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DD74F9215DCC5D009AC8DA /* FriendsViewController.swift */; };
+		64DD74FD215DF4C9009AC8DA /* FilmListUpdateListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DD74FC215DF4C9009AC8DA /* FilmListUpdateListener.swift */; };
 		F8B87D9F95308AD5F658B886 /* Pods_Filmo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCA9C1DE76A866E6ED36BD5 /* Pods_Filmo.framework */; };
 /* End PBXBuildFile section */
 
@@ -140,6 +141,7 @@
 		64C2FF2D2144B59E00D4D7A0 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		64C2FF2F2144B7E900D4D7A0 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		64DD74F9215DCC5D009AC8DA /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FriendsViewController.swift; path = Filmo/ViewControllers/FriendsViewController.swift; sourceTree = SOURCE_ROOT; };
+		64DD74FC215DF4C9009AC8DA /* FilmListUpdateListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmListUpdateListener.swift; sourceTree = "<group>"; };
 		702AFC027C562A638203C679 /* Pods_FilmoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FilmoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CCA9C1DE76A866E6ED36BD5 /* Pods_Filmo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Filmo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9106DE94E7BDCDAB2A1673F1 /* Pods-Filmo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Filmo.release.xcconfig"; path = "Pods/Target Support Files/Pods-Filmo/Pods-Filmo.release.xcconfig"; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 		642256A1215C9E7000CB1822 /* Backend */ = {
 			isa = PBXGroup;
 			children = (
+				64DD74FB215DF4A5009AC8DA /* ObjectUpdateListeners */,
 				6411AF0F2159C49E00460B1F /* Backend.swift */,
 				642256A3215C9EA300CB1822 /* DataModel */,
 				642256A2215C9E7E00CB1822 /* Firebase */,
@@ -392,6 +395,14 @@
 				64C2FF212144B4D300D4D7A0 /* Info.plist */,
 			);
 			path = FilmoUITests;
+			sourceTree = "<group>";
+		};
+		64DD74FB215DF4A5009AC8DA /* ObjectUpdateListeners */ = {
+			isa = PBXGroup;
+			children = (
+				64DD74FC215DF4C9009AC8DA /* FilmListUpdateListener.swift */,
+			);
+			path = ObjectUpdateListeners;
 			sourceTree = "<group>";
 		};
 		A0829CCCCEA11491868F0093 /* Frameworks */ = {
@@ -648,6 +659,7 @@
 				643894D7215654E2003563E0 /* ImdbPageScraper.swift in Sources */,
 				64C2FF002144B4D100D4D7A0 /* AppDelegate.swift in Sources */,
 				643894D921565510003563E0 /* ImdbFilmScraper.swift in Sources */,
+				64DD74FD215DF4C9009AC8DA /* FilmListUpdateListener.swift in Sources */,
 				642256AD215CADE700CB1822 /* SettingsViewController.swift in Sources */,
 				642256A7215C9F1400CB1822 /* BackendModelSerialiser.swift in Sources */,
 				641A96F02158AECC00F65BC0 /* Person.swift in Sources */,

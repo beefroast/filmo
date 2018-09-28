@@ -52,13 +52,16 @@ extension UIImage {
     }
 }
 
-class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FilmListUpdateListenerDelegate {
+
+    
 
     @IBOutlet weak var tableView: UITableView?
     @IBOutlet weak var getStartedView: UIView?
 
     lazy var imdb = ServiceProvider().imdb
     
+    var udpateListener: Any? = nil
     
     var filmListPromise: Promise<FilmList>? = nil {
         didSet {
@@ -67,10 +70,15 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             
             prom.reportProgress().done { [weak self] (list) in
-                guard prom === self?.filmListPromise else { return }
-                self?.title = list.name ?? self?.title
-                self?.filmList = list.films
-            }
+                
+                guard let this = self else { return }
+                guard prom === this.filmListPromise else { return }
+                this.title = list.name ?? self?.title
+                this.filmList = list.films
+                
+                self?.udpateListener = ServiceProvider().backend.registerFilmList(listener: this, forList: list)
+                
+            }.cauterize()
         }
     }
     
@@ -80,6 +88,8 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.udpateGetStartedView()
             
             guard let films = self.filmList else { return }
+            
+            
             
             self.filmData = films.map({ (films) -> FilmTableViewCellData in
                 self.cellDataForFilm(withId: films.id)
@@ -107,6 +117,9 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.udpateGetStartedView()
     }
     
+    func onFilmListUpdated(filmList: FilmList) {
+        print("Yay!")
+    }
 
     func cellDataForFilm(withId: String) -> FilmTableViewCellData {
         

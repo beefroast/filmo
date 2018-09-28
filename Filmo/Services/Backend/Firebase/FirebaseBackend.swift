@@ -134,6 +134,8 @@ class DefaultFirebaseInitialiser: FirebaseInitialiser {
 class FirebaseBackend: Backend {
 
     
+
+    
  
 
     lazy var database = Database.database().reference()
@@ -229,6 +231,29 @@ class FirebaseBackend: Backend {
         })
     }
     
+    func filmListFor(snapshot: DataSnapshot) -> FilmList {
+        
+        let name = snapshot.childSnapshot(forPath: "name").value as? String
+        let owner = snapshot.childSnapshot(forPath: "owner").value as? String
+        
+        snapshot.childSnapshot(forPath: "films").children.forEach({ (x) in
+            print(x)
+        })
+        
+        return FilmList(
+            id: snapshot.key,
+            name: snapshot.childSnapshot(forPath: "name").value as? String,
+            owner: snapshot.childSnapshot(forPath: "owner").value as? String,
+            films: snapshot.childSnapshot(forPath: "films").compactMapChildren({ (snapshot) -> FilmReference? in
+                guard let id = snapshot.childSnapshot(forPath: "filmId").value as? String else { return nil }
+                return FilmReference(
+                    id: id,
+                    name: snapshot.childSnapshot(forPath: "name").value as? String
+                )
+            })
+        )
+    }
+    
     func getFilmList(id: String) -> Promise<FilmList> {
         
         guard let user = Auth.auth().currentUser else {
@@ -236,26 +261,7 @@ class FirebaseBackend: Backend {
         }
         
         return database.child("filmLists/\(id)").observeSingleEventPromise(of: .value).map({ (snapshot: DataSnapshot) -> FilmList in
-            
-            let name = snapshot.childSnapshot(forPath: "name").value as? String
-            let owner = snapshot.childSnapshot(forPath: "owner").value as? String
-            
-            snapshot.childSnapshot(forPath: "films").children.forEach({ (x) in
-                print(x)
-            })
-            
-            return FilmList(
-                id: snapshot.key,
-                name: snapshot.childSnapshot(forPath: "name").value as? String,
-                owner: snapshot.childSnapshot(forPath: "owner").value as? String,
-                films: snapshot.childSnapshot(forPath: "films").compactMapChildren({ (snapshot) -> FilmReference? in
-                    guard let id = snapshot.childSnapshot(forPath: "filmId").value as? String else { return nil }
-                    return FilmReference(
-                        id: id,
-                        name: snapshot.childSnapshot(forPath: "name").value as? String
-                    )
-                })
-            )
+            return self.filmListFor(snapshot: snapshot)
         })
     }
     
@@ -311,21 +317,23 @@ class FirebaseBackend: Backend {
     func delete(list: FilmListReference) -> Promise<Void> {
         return database.child("filmLists/\(list.id)").removeValuePromise()
     }
-    
-    func rename(list: FilmListReference, name: String) -> Promise<Void> {
-        return database.child("filmLists/\(list.id)/name").setValuePromise(value: name)
+
+    func registerFilmList(listener: FilmListUpdateListenerDelegate, forList list: FilmListReference) -> Any {
+        
+        let handle = database.child("filmLists/\(list.id)").observe(.value, with: { [weak listener] (snapshot) in
+            let filmList = self.filmListFor(snapshot: snapshot)
+            listener?.onFilmListUpdated(filmList: filmList)
+        }) { (error) in
+            // TODO: Handle me
+        }
+        
+        return DeathRattler(onDeath: {
+            self.database.removeObserver(withHandle: handle)
+        })
     }
     
-    func add(film: FilmReference, toList list: FilmListReference) -> Promise<Void> {
-        // https://filmo-d8c5a.firebaseio.com/filmLists/111/films/tt0268126/name
-        let value: Any = film.name ?? false
-        return database.child("filmLists/\(list.id)/films/\(film.id)").setValuePromise(value: value)
-    }
     
-    func remove(film: FilmReference, fromList list: FilmListReference) -> Promise<Void> {
-        return database.child("filmLists/\(list.id)/films/\(film.id)").removeValuePromise()
-    }
-    
+
     
     func getFriends() -> Promise<Array<FriendReference>> {
         
@@ -341,18 +349,16 @@ class FirebaseBackend: Backend {
                 )
             })
         }
-
-        
-        
-        return FirebaseBackendError.notAuthenticated.toPromise()
-        
-//        return database.child("users/\(user.uid)/friends").observeSingleEventPromise(of: .value).map { (dict: [String: String]) -> [FriendReference] in
-//            return dict.map({ (id, name) -> FriendReference in
-//                FriendReference(id: id, name: name)
-//            })
-//        }
-
     }
     
     
+}
+
+
+class DeathRattler {
+    let onDeath: (() -> Void)
+    init(onDeath: @escaping (() -> Void)) { self.onDeath = onDeath }
+    deinit {
+        self.onDeath()
+    }
 }
