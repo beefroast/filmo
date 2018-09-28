@@ -24,12 +24,17 @@ admin.initializeApp();
 
 exports.createInitialList = functions.auth.user().onCreate((user) => {
     
+    // When a user makes an account, make a list for them...
+    
     const name = "My New List";
     
     return admin.database().ref('filmLists').push({
         "name": name,
         "owner": user.uid
     });
+    
+    // Make a user record for them
+    
 });
 
 

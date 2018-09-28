@@ -34,13 +34,9 @@ class SplashViewController: UIViewController {
         let backend = ServiceProvider().backend
 
         backend.getFilmListReferences().reportProgress().done { (lists) in
-            
             guard let vc = self.storyboard?.instantiateViewController(withIdentifier: "main") as? MainTabBarViewController else { return }
-            
             vc.lists = lists
-            
             self.present(vc, animated: true, completion: nil)
-        
         }.cauterize()
     }
     

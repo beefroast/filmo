@@ -12,6 +12,26 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
+
+
+extension Error {
+    var isMissingSnapshotError: Bool {
+        get {
+            switch (self as? FirebaseBackendError) {
+            case .some(.noSnapshotExists): return true
+            default: return false
+            }
+        }
+    }
+}
+
+enum FirebaseBackendError: Error {
+    case noSnapshotExists
+    case invalidPayload(Any?)
+    case notAuthenticated
+    case addedRecordMissingKey
+}
+
 protocol FirebaseInitialiser {
     func initialiseIfNeeded()
 }
@@ -54,11 +74,19 @@ extension DatabaseQuery {
     func observeSingleEventPromise<T>(of type: DataEventType) -> Promise<T> {
         return Promise { seal in
             self.observeSingleEvent(of: type, with: { (snapshot) in
-                guard let x = snapshot.value as? T else {
-                    seal.reject(BackendError.invalidPayload(snapshot))
+                
+                guard snapshot.exists() else {
+                    seal.reject(FirebaseBackendError.noSnapshotExists)
                     return
                 }
+                
+                guard let x = snapshot.value as? T else {
+                    seal.reject(FirebaseBackendError.invalidPayload(snapshot))
+                    return
+                }
+                
                 seal.fulfill(x)
+                
             }) { (error) in
                 seal.reject(error)
             }
@@ -82,6 +110,8 @@ class DefaultFirebaseInitialiser: FirebaseInitialiser {
 
 
 class FirebaseBackend: Backend {
+
+    
     
     
     
@@ -139,7 +169,7 @@ class FirebaseBackend: Backend {
     func deregister() -> Promise<Void> {
         
         guard let user = Auth.auth().currentUser else {
-            return Promise.init(error: BackendError.notAuthenticated)
+            return Promise.init(error: FirebaseBackendError.notAuthenticated)
         }
         
         return Promise { (seal) in
@@ -159,7 +189,7 @@ class FirebaseBackend: Backend {
     func getSavedFilms() -> Promise<Array<String>> {
         
         guard let user = Auth.auth().currentUser else {
-            return Promise.init(error: BackendError.notAuthenticated)
+            return Promise.init(error: FirebaseBackendError.notAuthenticated)
         }
         
         return database.child("filmList/\(user.uid)").observeSingleEventPromise(of: .value)
@@ -168,7 +198,7 @@ class FirebaseBackend: Backend {
     func save(film: String) -> Promise<Array<String>> {
         
         guard let user = Auth.auth().currentUser else {
-            return Promise.init(error: BackendError.notAuthenticated)
+            return Promise.init(error: FirebaseBackendError.notAuthenticated)
         }
         
         return self.getSavedFilms().then { (films) -> Promise<Array<String>> in            
@@ -183,7 +213,7 @@ class FirebaseBackend: Backend {
     func remove(film: String) -> Promise<Array<String>> {
         
         guard let user = Auth.auth().currentUser else {
-            return Promise.init(error: BackendError.notAuthenticated)
+            return Promise.init(error: FirebaseBackendError.notAuthenticated)
         }
         
         return self.getSavedFilms().then { (films) -> Promise<Array<String>> in
@@ -203,12 +233,13 @@ class FirebaseBackend: Backend {
     
     
     
+    
     // GETS FILM REFERENCES
     
     func getFilmListReferences() -> Promise<Array<FilmListReference>> {
         
         guard let user = Auth.auth().currentUser else {
-            return Promise.init(error: BackendError.notAuthenticated)
+            return Promise.init(error: FirebaseBackendError.notAuthenticated)
         }
         
         return database.child("members/\(user.uid)").observeSingleEventPromise(of: .value).map { (dictionary: [String: [String: Any]]) -> [FilmListReference] in
@@ -219,13 +250,16 @@ class FirebaseBackend: Backend {
                     owner: values["owner"] as? String
                 )
             })
-        }
+        }.recover({ (error) -> Guarantee<[FilmListReference]> in
+            guard error.isMissingSnapshotError else { throw error }
+            return Guarantee<[FilmListReference]>.value([])
+        })
     }
     
     func getFilmList(id: String) -> Promise<FilmList> {
         
         guard let user = Auth.auth().currentUser else {
-            return Promise.init(error: BackendError.notAuthenticated)
+            return Promise.init(error: FirebaseBackendError.notAuthenticated)
         }
         
         return database.child("filmLists/\(id)").observeSingleEventPromise(of: .value).map({ (dictionary: [String: Any]) -> FilmList in
@@ -246,7 +280,7 @@ class FirebaseBackend: Backend {
     func createListWith(name: String) -> Promise<FilmListReference> {
         
         guard let user = Auth.auth().currentUser else {
-            return Promise.init(error: BackendError.notAuthenticated)
+            return Promise.init(error: FirebaseBackendError.notAuthenticated)
         }
         
         let databaseReference = database.child("filmLists").childByAutoId()
@@ -259,7 +293,7 @@ class FirebaseBackend: Backend {
         return databaseReference.setValuePromise(value: data).map({ () -> FilmListReference in
             
             guard let id = databaseReference.key else {
-                throw BackendError.notImplemented
+                throw FirebaseBackendError.addedRecordMissingKey
             }
             
             return FilmListReference(id: id, name: name, owner: user.uid)
@@ -282,6 +316,21 @@ class FirebaseBackend: Backend {
     
     func remove(film: FilmReference, fromList list: FilmListReference) -> Promise<Void> {
         return database.child("filmLists/\(list.id)/films/\(film.id)").removeValuePromise()
+    }
+    
+    
+    func getFriends() -> Promise<Array<FriendReference>> {
+        
+        guard let user = Auth.auth().currentUser else {
+            return Promise.init(error: FirebaseBackendError.notAuthenticated)
+        }
+        
+        return database.child("users/\(user.uid)/friends").observeSingleEventPromise(of: .value).map { (dict: [String: String]) -> [FriendReference] in
+            return dict.map({ (id, name) -> FriendReference in
+                FriendReference(id: id, name: name)
+            })
+        }
+
     }
     
     

@@ -60,6 +60,7 @@
 		64C2FF202144B4D300D4D7A0 /* FilmoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C2FF1F2144B4D300D4D7A0 /* FilmoUITests.swift */; };
 		64C2FF2E2144B59E00D4D7A0 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C2FF2D2144B59E00D4D7A0 /* GradientView.swift */; };
 		64C2FF302144B7E900D4D7A0 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C2FF2F2144B7E900D4D7A0 /* ListViewController.swift */; };
+		64DD74FA215DCC5D009AC8DA /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DD74F9215DCC5D009AC8DA /* FriendsViewController.swift */; };
 		F8B87D9F95308AD5F658B886 /* Pods_Filmo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCA9C1DE76A866E6ED36BD5 /* Pods_Filmo.framework */; };
 /* End PBXBuildFile section */
 
@@ -138,6 +139,7 @@
 		64C2FF212144B4D300D4D7A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		64C2FF2D2144B59E00D4D7A0 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		64C2FF2F2144B7E900D4D7A0 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		64DD74F9215DCC5D009AC8DA /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FriendsViewController.swift; path = Filmo/ViewControllers/FriendsViewController.swift; sourceTree = SOURCE_ROOT; };
 		702AFC027C562A638203C679 /* Pods_FilmoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FilmoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CCA9C1DE76A866E6ED36BD5 /* Pods_Filmo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Filmo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9106DE94E7BDCDAB2A1673F1 /* Pods-Filmo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Filmo.release.xcconfig"; path = "Pods/Target Support Files/Pods-Filmo/Pods-Filmo.release.xcconfig"; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 			children = (
 				6422569A215C79B900CB1822 /* Views */,
 				64C2FF032144B4D100D4D7A0 /* Main.storyboard */,
+				64DD74F9215DCC5D009AC8DA /* FriendsViewController.swift */,
 				642256A9215CA4CA00CB1822 /* MainTabBarViewController.swift */,
 				643894DA21576C3E003563E0 /* FilmDetailsViewController.swift */,
 				64C2FF012144B4D100D4D7A0 /* ViewController.swift */,
@@ -648,6 +651,7 @@
 				642256AD215CADE700CB1822 /* SettingsViewController.swift in Sources */,
 				642256A7215C9F1400CB1822 /* BackendModelSerialiser.swift in Sources */,
 				641A96F02158AECC00F65BC0 /* Person.swift in Sources */,
+				64DD74FA215DCC5D009AC8DA /* FriendsViewController.swift in Sources */,
 				644FD9642155F2940000D108 /* ImdbScraper.swift in Sources */,
 				6411AF092159B97100460B1F /* MediaSearchResult.swift in Sources */,
 				6411AF072159B60800460B1F /* Initialisers.swift in Sources */,

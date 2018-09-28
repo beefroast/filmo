@@ -70,8 +70,8 @@ class MainTabBarViewController: UITabBarController, ListListViewControllerDelega
     }
     
     func getFriendsPage() -> UIViewController? {
-        let vc = UIViewController()
-        vc.title = "Friends"
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "friends")
+        vc?.title = "Friends"
         return vc
     }
     
