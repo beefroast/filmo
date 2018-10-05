@@ -31,6 +31,7 @@ class NodeStyler: Styler {
     func style(item: Any, comps: [String], i: Int, node: StyleNode) {
         node.style(item)
         guard i < comps.count else { return }
+    
         guard let next = node.children[comps[i]] else { return }
         style(item: item, comps: comps, i: i+1, node: next)
     }
@@ -94,8 +95,14 @@ class FourColorStyler: NodeStyler {
         highlightALight: UIColor,
         highlightBLight: UIColor) {
         
+        
+        let mapping = Strings()
+        
         self.init(
-            rootNode: StyleNode().withChild("h1") {
+            rootNode: StyleNode.withStyle { (x: IStringMappable) in
+                var elt = x
+                elt.stringMapper = mapping
+            }.withChild("h1") {
                 StyleNode.withStyle { (x: FontChangable) in
                     x.set(font: headerFont.withSize(36))
                 }

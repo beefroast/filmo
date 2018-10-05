@@ -8,6 +8,7 @@
 
 import UIKit
 import PromiseKit
+import SwiftReorder
 
 
 class FilmTableViewCell: UITableViewCell {
@@ -52,7 +53,7 @@ extension UIImage {
     }
 }
 
-class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FilmListUpdateListenerDelegate {
+class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FilmListUpdateListenerDelegate, TableViewReorderDelegate {
 
     @IBOutlet weak var tableView: UITableView?
     @IBOutlet weak var getStartedView: UIView?
@@ -103,6 +104,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
         self.tableView?.separatorStyle = UITableViewCellSeparatorStyle.none
         self.udpateGetStartedView()
+        self.tableView?.reorder.delegate = self
     }
     
     func onFilmListUpdated(filmList: FilmList) {
@@ -207,6 +209,15 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
                 this.navigationController?.popToViewController(this, animated: true)
             }).cauterize()
         })
+    }
+    
+    func tableView(_ tableView: UITableView, reorderRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        
+        // Want to re-order the films as we go, and then I guess commit changes at the end?
+        
+//        let item = items[sourceIndexPath.row]
+//        items.remove(at: sourceIndexPath.row)
+//        items.insert(item, at: destinationIndexPath.row)
     }
     
     @IBAction func onAddFilmPressed() -> Void {

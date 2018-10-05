@@ -784,6 +784,7 @@
                                 <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="next" textContentType="email"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="style" value="p1"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholderKey" value="login.email"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="delegate" destination="mPz-Aw-rqj" id="n6I-My-tJL"/>
@@ -838,6 +839,7 @@
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="style" value="h1/white"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="textKey" value="splash.title"/>
                                 </userDefinedRuntimeAttributes>
                             </label>
                         </subviews>

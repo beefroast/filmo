@@ -90,5 +90,14 @@ extension Error {
 
 
 
-
+extension EnumeratedSequence {
+    
+    func toDictionary<TKey: Hashable, TVal>(makeKey: ((Int, Base.Element) -> TKey), makeValue: ((Int, Base.Element) -> TVal)) -> [TKey: TVal] {
+        var dict = [TKey: TVal]()
+        self.forEach { (i, elt) in
+            dict[makeKey(i, elt)] = makeValue(i, elt)
+        }
+        return dict
+    }
+}
 

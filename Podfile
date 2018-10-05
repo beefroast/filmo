@@ -11,6 +11,7 @@ target 'Filmo' do
 	pod 'Firebase/Auth'
   	pod 'Firebase/Database'
 
+	pod 'SwiftReorder', '~> 5.0'
 	pod "PromiseKit"
 	pod "Fuzi"
 	pod "Alamofire"

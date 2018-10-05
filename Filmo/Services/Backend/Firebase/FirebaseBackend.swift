@@ -37,16 +37,7 @@ protocol FirebaseInitialiser {
 }
 
 
-extension EnumeratedSequence {
-    
-    func toDictionary<TKey: Hashable, TVal>(makeKey: ((Int, Base.Element) -> TKey), makeValue: ((Int, Base.Element) -> TVal)) -> [TKey: TVal] {
-        var dict = [TKey: TVal]()
-        self.forEach { (i, elt) in
-            dict[makeKey(i, elt)] = makeValue(i, elt)
-        }
-        return dict
-    }
-}
+
 
 extension DataSnapshot {
     
@@ -233,9 +224,6 @@ class FirebaseBackend: Backend {
     
     func filmListFor(snapshot: DataSnapshot) -> FilmList {
         
-        let name = snapshot.childSnapshot(forPath: "name").value as? String
-        let owner = snapshot.childSnapshot(forPath: "owner").value as? String
-        
         snapshot.childSnapshot(forPath: "films").children.forEach({ (x) in
             print(x)
         })
@@ -256,7 +244,7 @@ class FirebaseBackend: Backend {
     
     func getFilmList(id: String) -> Promise<FilmList> {
         
-        guard let user = Auth.auth().currentUser else {
+        guard Auth.auth().currentUser != nil else {
             return Promise.init(error: FirebaseBackendError.notAuthenticated)
         }
         

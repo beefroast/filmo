@@ -34,7 +34,7 @@ extension UIControlState {
     }
 }
 
-class StylableLabel: UILabel, Stylable, TextColorable, BackgroundColorable, FontChangable {
+class StylableLabel: StringMappableLabel, Stylable, TextColorable, BackgroundColorable, FontChangable {
     
     @IBInspectable var style: String? { didSet { sharedNodeStyler.style(item: self) }}
     
@@ -61,7 +61,7 @@ class StylableView: UIView, Stylable, BackgroundColorable {
     }
 }
 
-class StylableButton: UIButton, Stylable, TextColorable, BackgroundColorable, FontChangable {
+class StylableButton: StringMappableButton, Stylable, TextColorable, BackgroundColorable, FontChangable {
     
     @IBInspectable var style: String? { didSet { sharedNodeStyler.style(item: self) }}
     
@@ -78,7 +78,7 @@ class StylableButton: UIButton, Stylable, TextColorable, BackgroundColorable, Fo
     }
 }
 
-class StylableTextField: UITextField, Stylable, TextColorable, BackgroundColorable, FontChangable {
+class StylableTextField: StringMappableTextField, Stylable, TextColorable, BackgroundColorable, FontChangable {
     
     @IBInspectable var style: String? { didSet { sharedNodeStyler.style(item: self) }}
     
