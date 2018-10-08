@@ -93,15 +93,13 @@ class FourColorStyler: NodeStyler {
         highlightABold: UIColor,
         highlightBBold: UIColor,
         highlightALight: UIColor,
-        highlightBLight: UIColor) {
-        
-        
-        let mapping = Strings()
+        highlightBLight: UIColor,
+        stringContentProvider: StringContentProvider) {
         
         self.init(
             rootNode: StyleNode.withStyle { (x: IStringMappable) in
                 var elt = x
-                elt.stringMapper = mapping
+                elt.stringMapper = stringContentProvider
             }.withChild("h1") {
                 StyleNode.withStyle { (x: FontChangable) in
                     x.set(font: headerFont.withSize(36))
@@ -148,19 +146,7 @@ extension UIColor {
     }
 }
 
-let sharedNodeStyler = FourColorStyler(
-    headerFont: UIFont(name: "YeonSung-Regular", size: 40) ?? UIFont.systemFont(ofSize: 14),
-    bodyFont: UIFont(name: "Lato-Light", size: 18)!,
-    highlightABold: UIColor(hex: 0x07889B /*0xE372228*/),
-    highlightBBold: UIColor(hex: 0x07889B),
-    highlightALight: UIColor(hex: 0x66B9BF),
-    highlightBLight: UIColor(hex: 0xEEAA7B)
-)
 
-//        E37222
-//        07889B
-//        66B9BF
-//        EEAA7B
 
 
 

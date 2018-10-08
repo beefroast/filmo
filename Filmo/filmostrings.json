@@ -1,0 +1,24 @@
+{
+
+	"login": {
+		"email": "Email",
+		"password": "Password"
+	},
+
+	"listList": {
+
+	},
+
+	"list": {
+		"loading": "Loading...",
+		"noFilms": "Get started by adding some films to your list"
+	},
+
+	"search": {
+		"noText": "Enter the name of a film to begin searching..."
+	},
+
+	"settings": {
+		"logout": "Logout"
+	}
+}

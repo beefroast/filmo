@@ -50,6 +50,9 @@
 		643894D921565510003563E0 /* ImdbFilmScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643894D821565510003563E0 /* ImdbFilmScraper.swift */; };
 		643894DB21576C3E003563E0 /* FilmDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643894DA21576C3E003563E0 /* FilmDetailsViewController.swift */; };
 		643894DD215773AC003563E0 /* FilmSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643894DC215773AC003563E0 /* FilmSearchViewController.swift */; };
+		644CEECD216B21B3001CF047 /* StringContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 644CEECC216B21B3001CF047 /* StringContent.swift */; };
+		644CEECF216B23D5001CF047 /* filmostrings.json in Resources */ = {isa = PBXBuildFile; fileRef = 644CEECE216B23D5001CF047 /* filmostrings.json */; };
+		644CEED1216B27B6001CF047 /* StringIndexableFirebaseSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 644CEED0216B27B6001CF047 /* StringIndexableFirebaseSnapshot.swift */; };
 		644FD9642155F2940000D108 /* ImdbScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 644FD9632155F2940000D108 /* ImdbScraper.swift */; };
 		64C2FF002144B4D100D4D7A0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C2FEFF2144B4D100D4D7A0 /* AppDelegate.swift */; };
 		64C2FF022144B4D100D4D7A0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C2FF012144B4D100D4D7A0 /* ViewController.swift */; };
@@ -62,7 +65,7 @@
 		64C2FF302144B7E900D4D7A0 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C2FF2F2144B7E900D4D7A0 /* ListViewController.swift */; };
 		64DD74FA215DCC5D009AC8DA /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DD74F9215DCC5D009AC8DA /* FriendsViewController.swift */; };
 		64DD74FD215DF4C9009AC8DA /* FilmListUpdateListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DD74FC215DF4C9009AC8DA /* FilmListUpdateListener.swift */; };
-		64DD74FF21671B76009AC8DA /* StringContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DD74FE21671B76009AC8DA /* StringContent.swift */; };
+		64DD74FF21671B76009AC8DA /* StringContentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DD74FE21671B76009AC8DA /* StringContentProvider.swift */; };
 		F8B87D9F95308AD5F658B886 /* Pods_Filmo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCA9C1DE76A866E6ED36BD5 /* Pods_Filmo.framework */; };
 /* End PBXBuildFile section */
 
@@ -125,6 +128,9 @@
 		643894D821565510003563E0 /* ImdbFilmScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImdbFilmScraper.swift; sourceTree = "<group>"; };
 		643894DA21576C3E003563E0 /* FilmDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmDetailsViewController.swift; sourceTree = "<group>"; };
 		643894DC215773AC003563E0 /* FilmSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmSearchViewController.swift; sourceTree = "<group>"; };
+		644CEECC216B21B3001CF047 /* StringContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringContent.swift; sourceTree = "<group>"; };
+		644CEECE216B23D5001CF047 /* filmostrings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = filmostrings.json; sourceTree = "<group>"; };
+		644CEED0216B27B6001CF047 /* StringIndexableFirebaseSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringIndexableFirebaseSnapshot.swift; sourceTree = "<group>"; };
 		644FD9632155F2940000D108 /* ImdbScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImdbScraper.swift; sourceTree = "<group>"; };
 		64C2FEFC2144B4D100D4D7A0 /* Filmo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Filmo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		64C2FEFF2144B4D100D4D7A0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -143,7 +149,7 @@
 		64C2FF2F2144B7E900D4D7A0 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		64DD74F9215DCC5D009AC8DA /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FriendsViewController.swift; path = Filmo/ViewControllers/FriendsViewController.swift; sourceTree = SOURCE_ROOT; };
 		64DD74FC215DF4C9009AC8DA /* FilmListUpdateListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmListUpdateListener.swift; sourceTree = "<group>"; };
-		64DD74FE21671B76009AC8DA /* StringContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringContent.swift; sourceTree = "<group>"; };
+		64DD74FE21671B76009AC8DA /* StringContentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringContentProvider.swift; sourceTree = "<group>"; };
 		702AFC027C562A638203C679 /* Pods_FilmoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FilmoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CCA9C1DE76A866E6ED36BD5 /* Pods_Filmo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Filmo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9106DE94E7BDCDAB2A1673F1 /* Pods-Filmo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Filmo.release.xcconfig"; path = "Pods/Target Support Files/Pods-Filmo/Pods-Filmo.release.xcconfig"; sourceTree = "<group>"; };
@@ -296,6 +302,7 @@
 			children = (
 				6411AF112159C55100460B1F /* FirebaseBackend.swift */,
 				642256A4215C9EEE00CB1822 /* FirebaseFilmListSerialisation.swift */,
+				644CEED0216B27B6001CF047 /* StringIndexableFirebaseSnapshot.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -314,7 +321,8 @@
 			children = (
 				642256AF215CAFF000CB1822 /* Styler.swift */,
 				642256B1215CBA4000CB1822 /* NodeStyler.swift */,
-				64DD74FE21671B76009AC8DA /* StringContent.swift */,
+				64DD74FE21671B76009AC8DA /* StringContentProvider.swift */,
+				644CEECC216B21B3001CF047 /* StringContent.swift */,
 			);
 			path = Styling;
 			sourceTree = "<group>";
@@ -373,6 +381,7 @@
 				642256BD215CC3E400CB1822 /* Lato-LightItalic.ttf */,
 				642256BE215CC3E600CB1822 /* Lato-Regular.ttf */,
 				642256B3215CBFC100CB1822 /* YeonSung-Regular.ttf */,
+				644CEECE216B23D5001CF047 /* filmostrings.json */,
 				64C2FF082144B4D300D4D7A0 /* LaunchScreen.storyboard */,
 				64C2FF0B2144B4D300D4D7A0 /* Info.plist */,
 				644FD9632155F2940000D108 /* ImdbScraper.swift */,
@@ -536,6 +545,7 @@
 				642256C8215CC3E600CB1822 /* Lato-Regular.ttf in Resources */,
 				642256BF215CC3E600CB1822 /* Lato-Black.ttf in Resources */,
 				642256C2215CC3E600CB1822 /* Lato-Hairline.ttf in Resources */,
+				644CEECF216B23D5001CF047 /* filmostrings.json in Resources */,
 				642256C5215CC3E600CB1822 /* Lato-BlackItalic.ttf in Resources */,
 				642256C0215CC3E600CB1822 /* Lato-BoldItalic.ttf in Resources */,
 				64C2FF052144B4D100D4D7A0 /* Main.storyboard in Resources */,
@@ -656,6 +666,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				644CEECD216B21B3001CF047 /* StringContent.swift in Sources */,
 				6411AF0D2159BD7800460B1F /* Credit.swift in Sources */,
 				642256A5215C9EEE00CB1822 /* FirebaseFilmListSerialisation.swift in Sources */,
 				641A96F32158AEEC00F65BC0 /* StringExtensions.swift in Sources */,
@@ -689,9 +700,10 @@
 				642256B2215CBA4000CB1822 /* NodeStyler.swift in Sources */,
 				6411AF1D2159E6AD00460B1F /* User.swift in Sources */,
 				6411AF102159C49E00460B1F /* Backend.swift in Sources */,
-				64DD74FF21671B76009AC8DA /* StringContent.swift in Sources */,
+				64DD74FF21671B76009AC8DA /* StringContentProvider.swift in Sources */,
 				6411AF172159C57B00460B1F /* ServiceProvider.swift in Sources */,
 				643894DB21576C3E003563E0 /* FilmDetailsViewController.swift in Sources */,
+				644CEED1216B27B6001CF047 /* StringIndexableFirebaseSnapshot.swift in Sources */,
 				642256AA215CA4CA00CB1822 /* MainTabBarViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
